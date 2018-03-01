@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BrgySipac</title>
+
+        <link rel="icon" href="img/sipac-logo.png">
+
+        <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+        <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href="fonts/webfonts/fontawesome-all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script
+          src="https://code.jquery.com/jquery-3.1.1.min.js"
+          integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+          crossorigin="anonymous"></script>
+        <script src="semantic/dist/semantic.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="bootstrap/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src='js/jquery-3.3.1.min.js'></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="js/index.js"></script>
+        <script>
+            
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+        </script>
+    </head>
+    <body>
+        <section id="admin-header">
+            <nav class="navbar navbar-expand-lg p-0">
+                <div class="container">
+                    <a href="" class="navbar-brand mr-5">
+                        <img src="img/sipac-logo.png" alt="" width="70px" class="brand-pic">
+                        <p class="h4 p-brand">BrgySipac</p>
+                    </a>
+
+                    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item mr-3">
+                                <a href="admin.html" class="nav-link active link"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a>
+                            </li>
+
+                            <li class="nav-item mr-3">
+                                <a href="#about" class="nav-link link"><i class="fas fa-clipboard"></i>&nbsp;File Blotter</a>
+                            </li>
+
+                            <li class="nav-item mr-3">
+                                <a href="#developer" class="nav-link link"><i class="fas fa-handshake"></i>&nbsp;Summon</a>
+                            </li>
+
+                            <li class="nav-item mr-3">
+                                <a href="manage-resident.html" class="nav-link link"><i class="fas fa-id-card"></i>&nbsp;Manage Resident</a>
+                            </li>
+
+                            <li class="nav-item mr-3">
+                                <a href="#developer" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;Manage Blotter</a>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item mr-3">
+                                <a href="#header" class="nav-link active link"><i class="far fa-comments link-right-icon"></i></a>
+                            </li>
+
+                            <li class="nav-item mr-3">
+                                <a href="#about" class="nav-link link"><i class="far fa-bell link-right-icon"></i></a>
+                            </li>
+
+                            <li class="nav-item mr-3">
+                                <a href="#developer" class="nav-link link"><i class="far fa-user link-right-icon"></i> <i class="fas fa-angle-down"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </section>
+
+        <section id="manage-resident" class="mb-5">
+            <div class="container">
+                <div class="row text-center mb-5">
+                    <div class="col">
+                        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#add-resident">
+                            &plus; Add new resident
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-inverse table-bordered">
+                            <thead class="text-center">
+                                <th>Name</th>
+                                <th>Birthdate</th>
+                                <th>Age</th>
+                                <th>Address</th>
+                                <th>Blotter Record/s</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ryan Joseph R. Samonte</td>
+                                    <td>June 01, 1999</td>
+                                    <td>18</td>
+                                    <td>235 Gov. Pascual St. Brgy. Sipac-almacen, Navotas City</td>
+                                    <td>2</td>
+                                    <td class="text-center"><a href="" class="btn btn-warning"><i class="far fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;<a href="" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Ryan Joseph R. Samonte</td>
+                                    <td>June 01, 1999</td>
+                                    <td>18</td>
+                                    <td>235 Gov. Pascual St. Brgy. Sipac-almacen, Navotas City</td>
+                                    <td>2</td>
+                                    <td class="text-center"><a href="" class="btn btn-warning"><i class="far fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;<a href="" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Ryan Joseph R. Samonte</td>
+                                    <td>June 01, 1999</td>
+                                    <td>18</td>
+                                    <td>235 Gov. Pascual St. Brgy. Sipac-almacen, Navotas City</td>
+                                    <td>2</td>
+                                    <td class="text-center"><a href="" class="btn btn-warning"><i class="far fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;<a href="" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Ryan Joseph R. Samonte</td>
+                                    <td>June 01, 1999</td>
+                                    <td>18</td>
+                                    <td>235 Gov. Pascual St. Brgy. Sipac-almacen, Navotas City</td>
+                                    <td>2</td>
+                                    <td class="text-center"><a href="" class="btn btn-warning"><i class="far fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;<a href="" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Ryan Joseph R. Samonte</td>
+                                    <td>June 01, 1999</td>
+                                    <td>18</td>
+                                    <td>235 Gov. Pascual St. Brgy. Sipac-almacen, Navotas City</td>
+                                    <td>2</td>
+                                    <td class="text-center"><a href="" class="btn btn-warning"><i class="far fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;<a href="" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="main-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center my-3">
+                        <img src="img/sipac-logo.png" alt="nnhs-logo" class="img-fluid" width="50px">
+                        <p class="cdate" style="font-size: 15px; display:inline-block;">&copy; 2018</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <section id="add-resident-modal">
+            <div class="modal fade" id="add-resident" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">&plus; Add new resident</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form class="needs-validation" action="" id="add-resident-form" novalidate>
+                            <div class="form-row mb-3">
+                                <div class="col-md-4">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="e.g. Dela Cruz" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="e.g. Juan" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="middleName">Middle name</label>
+                                    <input type="text" class="form-control" id="middleName" placeholder="e.g. Marcial" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-3">
+                                <div class="col-md-4">
+                                    <label for="gender">Gender</label>
+                                    <select name="" id="gender" class="form-control">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="datepicker">Birthdate</label>
+                                    <input type="text" class="form-control" id="datepicker" placeholder="e.g. 03/01/2018">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="contactNum">Contact number</label>
+                                    <input type="text" class="form-control" id="contactNum" placeholder="e.g. 09123456789" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-3">
+                                <div class="col-md-3">
+                                    <label for="houseNum">House number</label>
+                                    <input type="text" class="form-control" id="houseNum" placeholder="e.g. 47" required>
+                                </div>
+
+                                <div class="col-md-9">
+                                    <label for="streetName">Street name</label>
+                                    <input type="text" class="form-control" id="streetName" placeholder="e.g. San Rafael" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success"><i class="far fa-check-circle"></i> Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <a href="javascript:" id="return-to-top" class="top-arr">
+            <i class="fas fa-chevron-up"></i>
+        </a>
+    </body>
+</html>

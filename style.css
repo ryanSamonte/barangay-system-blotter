@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css?family=Anton');
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light');
+
+/* body{
+    background-color: #F2F1EF;
+} */
+
+
+.top-arr{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.7);
+    width: 50px;
+    height: 50px;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    display: none;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.top-arr i{
+    color: #fff;
+    margin: 0;
+    position: relative;
+    left: 16px;
+    top: 13px;
+    font-size: 19px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.top-arr:hover{
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.top-arr:hover i{
+    color: #fff;
+    top: 5px;
+}
+
+/*************************** HOME PAGE STYLE *********************************/
+#main-footer{
+    background-color: #2FDAB8;
+}
+
+#main-footer .cdate{
+    color: #34383c;
+    font-family: 'Century Gothic';
+    font-size: 20px;
+}
+
+#main-footer ul{
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#main-footer ul li a{
+    text-decoration: none;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    padding: 20px;
+    color: white;
+}
+
+.center-panel{
+    border-left: 2px solid #96281B;
+    border-right: 2px solid #96281B;
+    height: 40%; 
+}
+
+/*************************** HOME PAGE STYLE END *********************************/
+
+/*************************** ADMIN.html STYLE *********************************/
+
+/************* ADMIN-HEADER SECTION ***************/
+#admin-header nav{
+    background-color: #2FDAB8;
+    margin-bottom: 50px;
+    margin-top: 20px;
+    height: 40px;
+}
+
+#admin-header .navbar-toggler{
+    color: #34383c;
+}
+
+#admin-header .brand-pic{
+    margin-top: 2px;
+}
+
+#admin-header .p-brand{
+    display: inline-block;
+    font-family: 'Century Gothic';
+    font-size: 17px;
+    color: #34383c;
+    font-weight: bold;
+}
+
+#admin-header .link{
+    color: #34383c;
+    font-size: 15px;
+    font-family: 'Century Gothic';
+}
+
+#admin-header .link:hover{
+    color: #fff;
+}
+
+#admin-header li:hover{
+    /* background-color: #15BF99; */
+    background-color: #136C5A;
+    transition: .5s;
+}
+
+#admin-header .link-icon{
+    color: #34383c;
+    font-size: 15px;
+}
+
+#admin-header .link-right-icon{
+    color: #34383c;
+    font-size: 30px;
+}
+/************* ADMIN-HEADER SECTION END ***************/
+
+/************* DASHBOARD SECTION ***************/
+#dashboard a{
+    text-decoration: none;
+}
+
+#dashboard .count-header-cont{
+    background-color: #19B5FE;
+    padding-top: 2px;
+    text-align: left;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-body-cont{
+    background-color: #19B5FE;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-body-cont i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+/************* DASHBOARD SECTION END ***************/
+
+/*************************** ADMIN.html STYLE END *********************************/
+
+/*************************** MANAGE-RESIDENT.html STYLE *********************************/
+
+/************* MANAGE RESIDENT SECTION ***************/
+
+
+/************* MANAGE RESIDENT SECTION END ***************/
+
+/************* ADD RESIDENT SECTION ***************/
+#add-resident-modal .modal-header{
+    background-color: #2FDAB8;
+    color: #34383c;
+    font-family: 'Century Gothic';
+}
+
+
+/************* ADD RESIDENT SECTION END ***************/
+
+/*************************** MANAGE-RESIDENT.html STYLE END *********************************/
+
+#manage-subj-menu .count-title{
+    font-family: 'Anton';
+    font-size: 20px;
+}
+
+#manage-subj-menu .count-lbl{
+    font-family: 'Century Gothic';
+    font-size: 40px;
+}
+/*************************** TEACHER PANEL PAGE STYLE END *********************************/
+@media only screen and (max-width: 991px) {
+    #header .navbar-trans{
+        background: none;
+        text-align: center;
+    }
+
+    #teacher-panel-header nav{
+        text-align: center;
+    }
+
+    .center-panel{
+        border-left: 0px solid #96281B;
+        border-right: 0px solid #96281B;
+        border-top: 2px solid #96281B;
+        border-bottom: 2px solid #96281B;
+        margin-top: 20px;
+    }
+}
+
+@media only screen and (max-width: 548px) {
+    #teacher-panel-header .p-brand{
+        visibility: collapse;
+    }
+}
+
