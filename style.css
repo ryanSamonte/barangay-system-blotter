@@ -50,6 +50,61 @@
     top: 5px;
 }
 
+/*************************** LOGIN PAGE STYLE *********************************/
+
+
+#login-body{
+    background-color: rgba(47, 218, 184,0.2);
+    background-image: url("../img/login-bg.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+#login-section .login-logo{
+    width: 700px;
+}
+
+#login-section .login-panel{
+    margin: 0 auto;
+    margin-top: 150px;
+    /* height: 100%; */
+}
+
+#login-section .card-header{
+    background-color: #fff;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    text-align: right;
+}
+
+#login-section .title-panel{
+    margin: 0 auto;
+    margin-top: 125px;
+    background-color: transparent;
+    border: transparent;
+}
+
+#login-section .title{
+    margin: 0 auto;
+    font-family: 'Century Gothic';
+    font-size: 50px;
+    font-weight: bold;
+    color: #2FDAB8;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#login-section .btn-submit{
+    margin-top: 35px;
+    margin-bottom: 40px;
+    margin: 0 auto;
+    background-color: #2FDAB8;
+}
+/*************************** LOGIN PAGE STYLE END *********************************/
+
+
 /*************************** HOME PAGE STYLE *********************************/
 #main-footer{
     background-color: #2FDAB8;
@@ -121,7 +176,7 @@
     color: #fff;
 }
 
-#admin-header li:hover{
+#admin-header .nav-li:hover{
     /* background-color: #15BF99; */
     background-color: #136C5A;
     transition: .5s;
@@ -132,9 +187,28 @@
     font-size: 15px;
 }
 
-#admin-header .link-right-icon{
+#admin-header .user-icon-nav{
     color: #34383c;
-    font-size: 30px;
+    font-size: 20px;
+}
+
+#admin-header .user-icon-nav:hover{
+    color: #fff;
+}
+
+#admin-header .profile-img{
+    width: 40px;
+    border-radius: 20px;
+    padding: 2px;
+}
+
+#admin-header .user-option{
+    color: #34383c;
+    font-size: 15px;
+}
+
+#admin-header .user-option:hover{
+    color: #fff;
 }
 /************* ADMIN-HEADER SECTION END ***************/
 
@@ -154,7 +228,7 @@
 		          1px 1px 0 #000;
 }
 
-#dashboard .count-body-cont{
+#dashboard .count-resident{
     background-color: #19B5FE;
     text-align: left;
     font-family: 'Century Gothic';
@@ -166,7 +240,81 @@
 		          1px 1px 0 #000;
 }
 
-#dashboard .count-body-cont i{
+#dashboard .count-resident:hover{
+    background-color: #0b587c;
+    transition: .5s;
+}
+
+#dashboard .count-resident i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+
+#dashboard .count-blotter{
+    background-color: #F39C12;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-blotter:hover{
+    background-color: rgb(179, 114, 11);
+    transition: .5s;
+}
+
+#dashboard .count-blotter i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+
+#dashboard .count-summon{
+    background-color: #37BD28;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-summon:hover{
+    background-color: #258f19;
+    transition: .5s;
+}
+
+#dashboard .count-summon i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+
+#dashboard .count-pending-blotter{
+    background-color: #F03434;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-pending-blotter:hover{
+    background-color: #a71717;
+    transition: .5s;
+}
+
+#dashboard .count-pending-blotter i{
     text-align: left;
     font-size: 40px;
     color: white;
@@ -188,22 +336,66 @@
     color: #34383c;
     font-family: 'Century Gothic';
 }
-
-
 /************* ADD RESIDENT SECTION END ***************/
 
 /*************************** MANAGE-RESIDENT.html STYLE END *********************************/
 
-#manage-subj-menu .count-title{
-    font-family: 'Anton';
-    font-size: 20px;
+/*************************** MANAGE-USER.html STYLE *********************************/
+
+/************* MANAGE USER SECTION ***************/
+
+
+/************* MANAGE USER SECTION END ***************/
+
+/************* ADD USER SECTION ***************/
+#add-user-modal .modal-header{
+    background-color: #2FDAB8;
+    color: #34383c;
+    font-family: 'Century Gothic';
+}
+/************* ADD USER SECTION END ***************/
+
+/*************************** MANAGE-USER.html STYLE END *********************************/
+
+/*************************** DENIED.php STYLE *********************************/
+#access-denied-section .access-d-panel{
+    background-color: transparent;
+    border: transparent;
+    margin-top: 100px;
 }
 
-#manage-subj-menu .count-lbl{
-    font-family: 'Century Gothic';
-    font-size: 40px;
+#access-denied-section i{
+    font-size: 50px;
+    color: #bfbf18;
 }
-/*************************** TEACHER PANEL PAGE STYLE END *********************************/
+
+#access-denied-section .access-d-heading{
+    font-family: 'Century Gothic';
+    font-size: 50px;
+}
+
+#access-denied-section .access-d-desc{
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+
+#access-denied-section .card-header{
+    background-color: transparent;
+    border: transparent;
+}
+
+#access-denied-section .card-footer{
+    background-color: transparent;
+    border-top: solid 2px black;
+}
+/*************************** DENIED.php STYLE END *********************************/
+@media only screen and (max-width: 1200px) {
+    #login-section .login-logo{
+        width: 600px;
+    }
+}
+
 @media only screen and (max-width: 991px) {
     #header .navbar-trans{
         background: none;
@@ -220,6 +412,13 @@
         border-top: 2px solid #96281B;
         border-bottom: 2px solid #96281B;
         margin-top: 20px;
+    }
+
+    #login-section .title-panel{
+        margin: 0 auto;
+        margin-top: 500px;
+        background-color: transparent;
+        border: transparent;
     }
 }
 
