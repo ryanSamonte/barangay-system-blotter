@@ -35,7 +35,7 @@
                     echo "<script>window.location.href='admin/admin.php';</script>";
                 }
                 else{
-                    echo "<script>window.location.href='user/index.php';</script>";
+                    echo "<script>window.location.href='user/user.php';</script>";
                 }
             }
             else{
@@ -52,6 +52,8 @@
 <html>
     <head>
         <title>BrgySipac</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="icon" href="img/sipac-logo.png">
 

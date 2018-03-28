@@ -28,6 +28,8 @@
     <head>
         <title>BrgySipac</title>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="icon" href="img/sipac-logo.png">
 
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
@@ -63,7 +65,6 @@
                                 <h1 class="access-d-desc">
                                     You do not have permission to access this resource
                                 </h1>
-                                <a href="user/index.php" class="btn btn-primary btn-block">Go back</a>
                             </div>
                         </div>
                     </div>
