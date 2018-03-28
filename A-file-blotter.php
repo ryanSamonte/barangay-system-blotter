@@ -27,6 +27,37 @@
     else{
         echo "<script>window.location.href='../login.php';</script>";
     }
+
+    if(ISSET($_POST['save_blotter'])){
+        $incident_place = mysqli_real_escape_string($conn, $_POST['incident_place']);
+        $incident_details = mysqli_real_escape_string($conn, $_POST['incident_details']);
+
+        $countBlotter = "SELECT COUNT(*) AS 'blotterCount' FROM tbl_blotter_details";
+        
+        $resultCountBlotter = mysqli_query($conn, $countBlotter);
+
+        while($DataRows = mysqli_fetch_assoc($resultCountBlotter)){
+            $blotterCount = $DataRows['blotterCount'];
+        }
+
+        if($blotterCount == 0){
+            $blotterID = 1;
+        }
+        else{
+            $blotterID = $blotterCount + 1;
+        }
+
+        $insertBlotterDetails = "INSERT INTO tbl_blotter_details VALUES('$blotterID', '$incident_place', '$incident_details', 'N', 'N', '0')";
+
+        if(mysqli_query($conn, $insertBlotterDetails)){
+            $_SESSION['successMessage'] = "Blotter details successfully added!";
+
+            header("Refresh: 3;url=complainant-info.php?bID=$blotterID");
+        }
+        else{
+            $_SESSION['errorMessage'] = "Dito".mysqli_error($conn);
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -53,11 +84,20 @@
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="../js/index.js"></script>
+        <script src="js/index.js"></script>
+
+        <script>
+            
+//   $( function() {
+//     $( "#datepicker" ).datepicker();
+//   } );
+$( function() {
+    $( "#datepicker" ).datepicker( "yy-mm-dd", "dateFormat", $( this ).val() );
+});
+        </script>
     </head>
     <body>
         <section id="admin-header">
-            <div class="overlay">
             <nav class="navbar navbar-expand-xl p-0 navigation">
                 <div class="container">
                     <a href="" class="navbar-brand mr-5">
@@ -72,11 +112,11 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item mr-3 nav-li">
-                                <a href="" class="nav-link active link"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a>
+                                <a href="admin.php" class="nav-link link"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a>
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
-                                <a href="file-blotter.php" class="nav-link link"><i class="fas fa-clipboard"></i>&nbsp;File Blotter</a>
+                                <a href="#about" class="nav-link link active"><i class="fas fa-clipboard"></i>&nbsp;File Blotter</a>
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
@@ -87,14 +127,14 @@
                                 <a href="manage-resident.php" class="nav-link link"><i class="fas fa-id-card"></i>&nbsp;Resident</a>
                             </li>
 
-                            <li class="nav-item dropdown nav-li mr-3">
+                            <li class="nav-item mr-3 dropdown nav-li">
                                 <a class="nav-link dropdown-toggle link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cogs"></i>&nbsp;Maintenance
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a href="#developer" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Manage Blotter</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-user"></i>&nbsp;&nbsp;Manage User</a>
+                                    <a href="manage-user.php" class="nav-link link active"><i class="fas fa-user"></i>&nbsp;&nbsp;Manage User</a>
                                 </div>
                             </li>
 
@@ -125,94 +165,82 @@
                     </div>
                 </div>
             </nav>
-          </div>
         </section>
 
-        <section id="dashboard" class="mb-5">
-            <div class="container">
+        <section id="file-blotter">
+            <div class="container mb-5">
+            <?php echo errorMessage(); echo successMessage(); ?>
                 <div class="row">
-                    <div class="col-md-3">
-                        <a href="manage-resident.php">
-                        <div class="card text-center" style="width: 100%;">
-                            <div class="card-header count-header-cont">
-                                <h5 class="card-title count-title">Resident/s</h5>
-                            </div>
-                            <div class="card-body count-resident">
-                                <?php
-                                    $retriveResidentCountQuery = "SELECT COUNT(*) AS 'residentcount' FROM tbl_resident WHERE archivestatus = 0";
+                    <div class="card card-table" style="padding-left:0px;padding-right:0px;">
+                        <div class="card-header card-table-header">
+                            <h1>Blotter Details</h1>
+                        </div>
+                        <div class="card-body">
+                                <div class="container">
+                                    <form class="needs-validation" action="file-blotter.php" method="POST" id="add-resident-form" novalidate>
+                                       <div class="form-row mb-3">
+                                            <div class="col">
+                                                <label for="lastname">Incident place</label>
+                                                <input type="text" class="form-control" name="incident_place" required>
+                                                <div class="invalid-feedback">
+                                                    Required field!
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                    $result = mysqli_query($conn, $retriveResidentCountQuery);
-
-                                    while($DataRows = mysqli_fetch_assoc($result)){
-                                        $residentcount = $DataRows['residentcount'];
-                                ?>
-                                <p class="card-text count-lbl"><i class="fas fa-id-card"></i>&nbsp;&nbsp;<?php echo htmlentities($residentcount); ?></p>
-                                    <?php } ?>
+                                        <div class="form-row mb-3">
+                                            <div class="col">
+                                                <label for="gender">Incident Details</label>
+                                                <textarea class="form-control" rows="10" name="incident_details" required></textarea>
+                                                <div class="invalid-feedback">
+                                                    Required field!
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" name="save_blotter" class="btn btn-success"><i class="far fa-check-circle"></i> Save changes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
+                                </div>
+                                    </form>
                             </div>
                         </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-3">
-                        <a href="login.html">
-                        <div class="card text-center" style="width: 100%;">
-                            <div class="card-header count-header-cont" style="background-color: #F39C12;">
-                                <h5 class="card-title count-title">Blotter/s</h5>
-                            </div>
-                            <div class="card-body count-blotter">
-                                <p class="card-text count-lbl"><i class="fas fa-clipboard link-icon"></i>&nbsp;&nbsp;20</p>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-3">
-                        <a href="login.html">
-                        <div class="card text-center" style="width: 100%;">
-                            <div class="card-header count-header-cont" style="background-color: #37BD28;">
-                                <h5 class="card-title count-title">Summon/s</h5>
-                            </div>
-                            <div class="card-body count-summon">
-                                <p class="card-text count-lbl"><i class="fas fa-handshake"></i>&nbsp;&nbsp;20</p>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-3">
-                        <a href="login.html">
-                        <div class="card text-center" style="width: 100%;">
-                            <div class="card-header count-header-cont" style="background-color: #F03434;">
-                                <h5 class="card-title count-title">Pending Blotter/s</h5>
-                            </div>
-                            <div class="card-body count-pending-blotter">
-                                <p class="card-text count-lbl"><i class="fas fa-calendar-times"></i>&nbsp;&nbsp;20</p>
-                            </div>
-                        </div>
-                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
+        
         <footer id="main-footer">
             <div class="container">
                 <div class="row">
                     <div class="col text-center my-3">
                         <img src="../img/sipac-logo.png" alt="nnhs-logo" class="img-fluid" width="50px">
-                        <p class="cdate" style="font-size: 15px; display:inline-block;">&copy; 2018</p>
+                        <p class="cdate" style="font-size: 15px; display:inline-block;">&copy; <?php echo date("Y"); ?></p>
                     </div>
                 </div>
             </div>
         </footer>
-
         
-
-        <a href="javascript:" id="return-to-top" class="top-arr">
-            <i class="fas fa-chevron-up"></i>
-        </a>
-
-        <!-- <script src="js/index.js"></script> -->
-        <script src='js/jquery-3.3.1.min.js'></script>
+        
+        <script>
+                (function() {
+                    'use strict';
+                    window.addEventListener('load', function() {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                    });
+                }, false);
+            })();
+        </script>
     </body>
 </html>
