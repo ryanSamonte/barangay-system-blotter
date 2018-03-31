@@ -1,0 +1,529 @@
+@import url('https://fonts.googleapis.com/css?family=Anton');
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300');
+
+
+
+
+body{
+    background-color: #F5F5F5;
+}
+
+.card-table{
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.14);
+    border-radius: 10px;
+    color: rgba(0,0,0, 0.87);
+    background-color: #fff;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.card-table-header{
+    background-color: #2FDAB8;
+}
+
+.card-table-header h1{
+    font-family: "Century Gothic";
+    text-transform: uppercase;
+    color: #000;
+    font-size: 25px;
+
+}
+
+thead{
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 20px;
+}
+
+tbody{
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+}
+
+.top-arr{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.7);
+    width: 50px;
+    height: 50px;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    display: none;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.top-arr i{
+    color: #fff;
+    margin: 0;
+    position: relative;
+    left: 16px;
+    top: 13px;
+    font-size: 19px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.top-arr:hover{
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.top-arr:hover i{
+    color: #fff;
+    top: 5px;
+}
+
+.btn-table{
+    width: 50px;
+    margin: 0px;
+}
+
+/*************************** LOGIN PAGE STYLE *********************************/
+
+
+#login-body{
+    background-color: rgba(47, 218, 184,0.2);
+    background-image: url("../img/login-bg.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+#login-section .login-logo{
+    width: 700px;
+}
+
+#login-section .login-panel{
+    margin: 0 auto;
+    margin-top: 150px;
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.14);
+    /* height: 100%; */
+}
+
+#login-section .card-header{
+    background-color: #fff;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    text-align: right;
+}
+
+#login-section .title-panel{
+    margin: 0 auto;
+    margin-top: 125px;
+    background-color: transparent;
+    border: transparent;
+}
+
+#login-section .title{
+    margin: 0 auto;
+    font-family: 'Century Gothic';
+    font-size: 50px;
+    font-weight: bold;
+    color: #2FDAB8;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#login-section .btn-submit{
+    margin-top: 35px;
+    margin-bottom: 40px;
+    margin: 0 auto;
+    background-color: #2FDAB8;
+}
+/*************************** LOGIN PAGE STYLE END *********************************/
+
+
+/*************************** HOME PAGE STYLE *********************************/
+#main-footer{
+    background-color: #2FDAB8;
+}
+
+#main-footer .cdate{
+    color: #34383c;
+    font-family: 'Century Gothic';
+    font-size: 20px;
+}
+
+#main-footer ul{
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#main-footer ul li a{
+    text-decoration: none;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    padding: 20px;
+    color: white;
+}
+
+.center-panel{
+    border-left: 2px solid #96281B;
+    border-right: 2px solid #96281B;
+    height: 40%; 
+}
+
+/*************************** HOME PAGE STYLE END *********************************/
+
+/*************************** ADMIN.html STYLE *********************************/
+
+/************* ADMIN-HEADER SECTION ***************/
+#admin-header nav{
+    background-color: #2FDAB8;
+    margin-bottom: 50px;
+}
+
+#admin-header .brand{
+    margin-top: -45px;
+    margin-bottom: -40px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+#admin-header .navbar-toggler-icon{
+    /* background-color: #34383c; */
+    color: #34383c;
+}
+
+#admin-header .p-brand{
+    display: inline-block;
+    font-family: 'Century Gothic';
+    font-size: 17px;
+    color: #34383c;
+    font-weight: bold;
+}
+
+#admin-header .link{
+    color: #34383c;
+    font-size: 15px;
+    font-family: 'Century Gothic';
+}
+
+#admin-header .link:hover{
+    color: #fff;
+    background-color: #136C5A;
+    transition: .5s;
+}
+
+#admin-header .active{
+    color: #34383c;
+    border-bottom: solid 2px #136C5A;
+}
+
+#admin-header .nav-li:hover{
+    /* background-color: #15BF99; */
+    color: #fff;
+    background-color: #136C5A;
+    transition: .5s;
+}
+
+#admin-header .link-icon{
+    color: #34383c;
+    font-size: 15px;
+}
+
+#admin-header .user-icon-nav{
+    color: #34383c;
+    font-size: 20px;
+}
+
+#admin-header .user-icon-nav:hover{
+    color: #fff;
+}
+
+#admin-header .profile-img{
+    width: 50px;
+    border-radius: 50%;
+}
+
+#admin-header .user-option{
+    color: #34383c;
+    font-size: 35px;
+}
+
+#admin-header .user-option:hover{
+    color: #fff;
+}
+
+/************* ADMIN-HEADER SECTION END ***************/
+
+/************* DASHBOARD SECTION ***************/
+#dashboard a{
+    text-decoration: none;
+}
+
+#dashboard .count-header-cont{
+    background-color: #19B5FE;
+    padding-top: 2px;
+    text-align: left;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-resident{
+    background-color: #19B5FE;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-resident:hover{
+    background-color: #0b587c;
+    transition: .5s;
+}
+
+#dashboard .count-resident i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+
+#dashboard .count-blotter{
+    background-color: #F39C12;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-blotter:hover{
+    background-color: rgb(179, 114, 11);
+    transition: .5s;
+}
+
+#dashboard .count-blotter i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+
+#dashboard .count-summon{
+    background-color: #37BD28;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-summon:hover{
+    background-color: #258f19;
+    transition: .5s;
+}
+
+#dashboard .count-summon i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+
+#dashboard .count-pending-blotter{
+    background-color: #F03434;
+    text-align: left;
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    color: white;
+    text-shadow: -1px -1px 0 #000,
+		          1px -1px 0 #000,
+		         -1px 1px 0 #000,
+		          1px 1px 0 #000;
+}
+
+#dashboard .count-pending-blotter:hover{
+    background-color: #a71717;
+    transition: .5s;
+}
+
+#dashboard .count-pending-blotter i{
+    text-align: left;
+    font-size: 40px;
+    color: white;
+}
+/************* DASHBOARD SECTION END ***************/
+
+/*************************** ADMIN.html STYLE END *********************************/
+
+/*************************** MANAGE-RESIDENT.html STYLE *********************************/
+
+/************* MANAGE RESIDENT SECTION ***************/
+
+
+/************* MANAGE RESIDENT SECTION END ***************/
+
+/************* ADD RESIDENT SECTION ***************/
+#add-resident-modal .modal-header{
+    background-color: #2FDAB8;
+    color: #34383c;
+    font-family: 'Century Gothic';
+}
+/************* ADD RESIDENT SECTION END ***************/
+
+/*************************** MANAGE-RESIDENT.html STYLE END *********************************/
+
+/*************************** MANAGE-USER.html STYLE *********************************/
+
+/************* MANAGE USER SECTION ***************/
+
+
+/************* MANAGE USER SECTION END ***************/
+
+/************* ADD USER SECTION ***************/
+#add-user-modal .modal-header{
+    background-color: #2FDAB8;
+    color: #34383c;
+    font-family: 'Century Gothic';
+}
+/************* ADD USER SECTION END ***************/
+
+/*************************** MANAGE-USER.html STYLE END *********************************/
+
+/*************************** DENIED.php STYLE *********************************/
+#access-denied-section .access-d-panel{
+    background-color: transparent;
+    border: transparent;
+    margin-top: 100px;
+}
+
+#access-denied-section i{
+    font-size: 50px;
+    color: #bfbf18;
+}
+
+#access-denied-section .access-d-heading{
+    font-family: 'Century Gothic';
+    font-size: 50px;
+}
+
+#access-denied-section .access-d-desc{
+    font-family: 'Century Gothic';
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+
+#access-denied-section .card-header{
+    background-color: transparent;
+    border: transparent;
+}
+
+#access-denied-section .card-footer{
+    background-color: transparent;
+    border-top: solid 2px black;
+}
+/*************************** DENIED.php STYLE END *********************************/
+@media only screen and (max-width: 1200px) {
+    #login-section .login-logo{
+        width: 600px;
+    }
+
+    .brand {
+        margin-top: -50px;
+        margin-bottom: 0px;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .navbar-nav{
+        text-align: left;
+    }
+
+    #admin-header .link{
+        color: #34383c;
+        font-size: 15px;
+        font-family: 'Century Gothic';
+    }
+
+    #admin-header .link:hover{
+        background-color: transparent;
+        transition: .5s;
+        color: #000;
+    }
+
+    #admin-header .nav-li:hover{
+        font-weight: bold;
+        color: #000;
+        background-color: transparent;
+        transition: .5s;
+    }
+
+    #admin-header .dropdown-menu{
+        background-color: transparent;
+        border: none;
+    }
+
+    #admin-header .dropdown-menu a{
+        padding: 10px;
+    }
+
+    #admin-header .dropdown-menu a:hover{
+        padding: 10px;
+        font-weight: bold;
+        color: #000;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #header .navbar-trans{
+        background: none;
+        text-align: center;
+    }
+
+    #teacher-panel-header nav{
+        text-align: left;
+    }
+
+    .center-panel{
+        border-left: 0px solid #96281B;
+        border-right: 0px solid #96281B;
+        border-top: 2px solid #96281B;
+        border-bottom: 2px solid #96281B;
+        margin-top: 20px;
+    }
+
+    #login-section .title-panel{
+        margin: 0 auto;
+        margin-top: 500px;
+        background-color: transparent;
+        border: transparent;
+    }
+}
+
+@media only screen and (max-width: 548px) {
+    #teacher-panel-header .p-brand{
+        visibility: collapse;
+    }
+}
+

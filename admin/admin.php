@@ -80,7 +80,7 @@
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
-                                <a href="#developer" class="nav-link link"><i class="fas fa-handshake"></i>&nbsp;Summon</a>
+                                <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
@@ -92,9 +92,9 @@
                                 <i class="fas fa-cogs"></i>&nbsp;Maintenance
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Manage Blotter</a>
+                                    <a href="blotter-history.php" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Blotter History</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-user"></i>&nbsp;&nbsp;Manage User</a>
+                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-user"></i>&nbsp;&nbsp;User Account</a>
                                 </div>
                             </li>
 
@@ -103,7 +103,7 @@
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="court-referral.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
                                     <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
                                 </div>
@@ -191,6 +191,14 @@
                         </div>
                         </a>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <!-- .col -->
                 </div>
             </div>
         </section>

@@ -45,8 +45,45 @@
             else{
                 $gender = 'F';
             }
-        $birthdate = date_create(mysqli_real_escape_string($conn, $_POST['birthdate']));
-        $birthdateNewFormat = date_format($birthdate, "Y-m-d");
+        $birthdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
+        
+        $date = new DateTime($birthdate);
+        $now = new DateTime();
+
+        $extractDate = "SELECT EXTRACT(YEAR FROM '$birthdate') AS 'yearInput', EXTRACT(MONTH FROM '$birthdate') AS 'monthInput', EXTRACT(DAY FROM '$birthdate') AS 'dayInput', EXTRACT(YEAR FROM NOW()) AS 'yearNow', EXTRACT(MONTH FROM NOW()) AS 'monthNow', EXTRACT(DAY FROM NOW()) AS 'dayNow'";
+
+        $resultDate = mysqli_query($conn, $extractDate);
+
+        while($DataRows = mysqli_fetch_assoc($resultDate)){
+            $yearInput = $DataRows['yearInput'];
+            $monthInput = $DataRows['monthInput'];
+            $dayInput = $DataRows['dayInput'];
+
+            $yearNow = $DataRows['yearNow'];
+            $monthNow = $DataRows['monthNow'];
+            $dayNow = $DataRows['dayNow'];
+        }
+
+        if($date > $now){
+            $_SESSION['errorMessage'] = "Invalid date input!";
+        }
+        else{
+            if($monthInput < $monthNow){
+                $age = $yearNow - $yearInput;
+            }
+            else if($monthInput > $monthNow){
+                $age = (($yearNow - 1) - $yearInput);
+            }
+            else{
+                if($dayInput < $dayNow){
+                    $age = $yearNow - $yearInput;
+                }
+                else{
+                    $age = (($yearNow - 1) - $yearInput);
+                }
+            }
+        }
+
         $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
         $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
         $civilstatus = mysqli_real_escape_string($conn, $_POST['civilstatus']);
@@ -55,10 +92,10 @@
         $streetname = mysqli_real_escape_string($conn, $_POST['streetname']);
         
         
-        $insertUserQuery = "INSERT INTO `tbl_household_head`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `occupation`, `civilstatus`, `religion`, `housenum`, `streetname`, `archivestatus`, `blotterrecords`, `residenttype`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdateNewFormat', DATEDIFF(CURRENT_DATE(), '$birthdateNewFormat') / 365 ,'$contactnum','$occupation','$civilstatus','$religion','$housenum','$streetname','0','0','Household head')";
+        $insertUserQuery = "INSERT INTO `tbl_resident`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `occupation`, `civilstatus`, `religion`, `housenum`, `streetname`, `archivestatus`, `blotterrecords`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdate', '$age' ,'$contactnum','$occupation','$civilstatus','$religion','$housenum','$streetname','0','0')";
     
         if(mysqli_query($conn, $insertUserQuery)){
-            $_SESSION['successMessage'] = "New household head successfully added!";
+            $_SESSION['successMessage'] = "New resident info successfully added!";
         }
         else{
             $_SESSION['errorMessage'] = mysqli_error($conn);
@@ -117,7 +154,7 @@
         <section id="admin-header">
             <nav class="navbar navbar-expand-xl p-0">
                 <div class="container">
-                    <a href="" class="navbar-brand mr-5">
+                    <a href="admin.php" class="navbar-brand mr-5">
                         <img src="../img/sipac-logo.png" alt="" width="70px" class="brand-pic">
                         <p class="h4 p-brand">BrgySipac</p>
                     </a>
@@ -137,7 +174,7 @@
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
-                                <a href="#developer" class="nav-link link"><i class="fas fa-handshake"></i>&nbsp;Summon</a>
+                                <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
@@ -149,9 +186,9 @@
                                 <i class="fas fa-cogs"></i>&nbsp;Maintenance
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Manage Blotter</a>
+                                    <a href="blotter-history.php" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Blotter History</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-user"></i>&nbsp;&nbsp;Manage User</a>
+                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-user"></i>&nbsp;&nbsp;User Account</a>
                                 </div>
                             </li>
 
@@ -160,7 +197,7 @@
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
                                     <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
                                 </div>
@@ -199,7 +236,7 @@
                     <div class="col">
                         <div class="card card-table" style="padding-left:0px;padding-right:0px;">
                             <div class="card-header card-table-header">
-                                <h1>Household Head</h1>
+                                <h1>Resident</h1>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -242,7 +279,7 @@
                                                     <div class="container">
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <a href="view-profile.php?id=<?php echo $residentid; ?>" class="btn btn-primary btn-table" data-toggle="tooltip" data-placement="top" title="View Profile"><i class="fas fa-eye"></i></a>
+                                                                <a href="view-profile.php?id=<?php echo $residentid; ?>" class="btn btn-primary btn-table" data-toggle="tooltip" data-placement="top" title="View Profile" target="_blank"><i class="fas fa-eye"></i></a>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <a href="" class="btn btn-warning btn-table" data-toggle="tooltip" data-placement="top" title="Update Profile" data-animation="true"><i class="far fa-edit"></i></a>
@@ -270,7 +307,7 @@
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">&plus; Add new household head</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">&plus; Add new resident</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

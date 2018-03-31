@@ -45,10 +45,47 @@
             else{
                 $gender = 'F';
             }
-        $birthdate = date_create(mysqli_real_escape_string($conn, $_POST['birthdate']));
-        $birthdateNewFormat = date_format($birthdate, "Y-m-d");
+        $birthdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
+
+        $date = new DateTime($birthdate);
+        $now = new DateTime();
+
+        $extractDate = "SELECT EXTRACT(YEAR FROM '$birthdate') AS 'yearInput', EXTRACT(MONTH FROM '$birthdate') AS 'monthInput', EXTRACT(DAY FROM '$birthdate') AS 'dayInput', EXTRACT(YEAR FROM NOW()) AS 'yearNow', EXTRACT(MONTH FROM NOW()) AS 'monthNow', EXTRACT(DAY FROM NOW()) AS 'dayNow'";
+
+        $resultDate = mysqli_query($conn, $extractDate);
+
+        while($DataRows = mysqli_fetch_assoc($resultDate)){
+            $yearInput = $DataRows['yearInput'];
+            $monthInput = $DataRows['monthInput'];
+            $dayInput = $DataRows['dayInput'];
+
+            $yearNow = $DataRows['yearNow'];
+            $monthNow = $DataRows['monthNow'];
+            $dayNow = $DataRows['dayNow'];
+        }
+
+        if($date > $now){
+            $_SESSION['errorMessage'] = "Invalid date input!";
+        }
+        else{
+            if($monthInput < $monthNow){
+                $age = $yearNow - $yearInput;
+            }
+            else if($monthInput > $monthNow){
+                $age = (($yearNow - 1) - $yearInput);
+            }
+            else{
+                if($dayInput < $dayNow){
+                    $age = $yearNow - $yearInput;
+                }
+                else{
+                    $age = (($yearNow - 1) - $yearInput);
+                }
+            }
+        }
+
         $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
-        $profileimg = $_FILES['profileimg']['name'];
+        $profileimgins = $_FILES['profileimg']['name'];
         $move_location = "../uploads/".basename($_FILES["profileimg"]["name"]);
         $username = mysqli_real_escape_string($conn, $_POST['username']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
@@ -69,7 +106,7 @@
             $_SESSION['errorMessage'] = "Username already exists!";
         }
         else{
-            $insertUserQuery = "INSERT INTO `tbl_user`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `username`, `password`, `privilege`, `archivestatus`, `profileimg`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdateNewFormat', DATEDIFF(CURRENT_DATE(), '$birthdateNewFormat') / 365 ,'$contactnum','$username','$password','$privilegeTypeNum','0', '$profileimg')";
+            $insertUserQuery = "INSERT INTO `tbl_user`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `username`, `password`, `privilege`, `archivestatus`, `profileimg`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdate', '$age' ,'$contactnum','$username','$password','$privilegeTypeNum','0', '$profileimgins')";
         
             if(mysqli_query($conn, $insertUserQuery)){
                 $_SESSION['successMessage'] = "New user successfully added!";
@@ -103,11 +140,14 @@
     <head>
         <title>BrgySipac</title>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="icon" href="../img/sipac-logo.png">
 
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link href="../fonts/webfonts/fontawesome-all.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/gijgo@1.8.2/combined/css/gijgo.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="../css/style.css">
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -119,24 +159,14 @@
           crossorigin="anonymous"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/gijgo@1.8.2/combined/js/gijgo.min.js" type="text/javascript"></script>
         <script src="js/index.js"></script>
-
-        <script>
-            
-//   $( function() {
-//     $( "#datepicker" ).datepicker();
-//   } );
-$( function() {
-    $( "#datepicker" ).datepicker( "yy-mm-dd", "dateFormat", $( this ).val() );
-});
-        </script>
-    </head>
+</head>
     <body>
         <section id="admin-header">
-            <nav class="navbar navbar-expand-lg p-0">
+            <nav class="navbar navbar-expand-xl p-0">
                 <div class="container">
-                    <a href="" class="navbar-brand mr-5">
+                    <a href="admin.php" class="navbar-brand">
                         <img src="../img/sipac-logo.png" alt="" width="70px" class="brand-pic">
                         <p class="h4 p-brand">BrgySipac</p>
                     </a>
@@ -147,28 +177,42 @@ $( function() {
 
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
-                            <li class="nav-item mr-3 nav-li">
-                                <a href="admin.php" class="nav-link active link"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a>
+                            <li class="nav-item nav-li mr-3">
+                                <a href="admin.php" class="nav-link link"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a>
                             </li>
 
-                            <li class="nav-item mr-3 nav-li">
-                                <a href="#about" class="nav-link link"><i class="fas fa-clipboard"></i>&nbsp;File Blotter</a>
+                            <li class="nav-item nav-li mr-3">
+                                <a href="file-blotter.php" class="nav-link link"><i class="fas fa-clipboard"></i>&nbsp;File Blotter</a>
                             </li>
 
-                            <li class="nav-item mr-3 nav-li">
-                                <a href="#developer" class="nav-link link"><i class="fas fa-handshake"></i>&nbsp;Summon</a>
+                            <li class="nav-item nav-li mr-3">
+                                <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
                             </li>
 
-                            <li class="nav-item mr-3 nav-li">
+                            <li class="nav-item nav-li mr-3">
                                 <a href="manage-resident.php" class="nav-link link"><i class="fas fa-id-card"></i>&nbsp;Resident</a>
                             </li>
 
-                            <li class="nav-item mr-3 nav-li">
-                                <a href="#developer" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;Manage Blotter</a>
+                            <li class="nav-item dropdown nav-li mr-3">
+                                <a class="nav-link dropdown-toggle link active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-cogs"></i>&nbsp;Maintenance
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a href="blotter-history.php" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Blotter History</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="manage-user.php" class="nav-link link active"><i class="fas fa-user"></i>&nbsp;&nbsp;User Account</a>
+                                </div>
                             </li>
 
-                            <li class="nav-item mr-3 nav-li">
-                                <a href="" class="nav-link link"><i class="fas fa-user"></i>&nbsp;Manage User</a>
+                            <li class="nav-item dropdown nav-li">
+                                <a class="nav-link dropdown-toggle link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-file"></i>&nbsp;Report
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a href="" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                </div>
                             </li>
                         </ul>
 
@@ -178,10 +222,9 @@ $( function() {
                                     <img src="../uploads/<?php echo $profileimg; ?>" alt="" class="profile-img">
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Welcome <?php echo $firstname.'!'; ?></a>
-                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item nav-link link" href="#">Welcome <?php echo $firstname.'!'; ?></a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="../logout.php">Logout</a>
+                                    <a class="dropdown-item nav-link link" href="../logout.php">Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -202,56 +245,62 @@ $( function() {
                 </div>
 
                 <div class="row">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-inverse table-bordered">
-                            <thead class="text-center">
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Contact #</th>
-                                <th>Username</th>
-                                <th>Privilege Type</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    $_SESSION['userid'] = $userid;
-                                    $retriveUserQuery = "SELECT * FROM tbl_user WHERE archivestatus = 0 AND userid != '$userid'";
+                    <div class="col">
+                        <div class="card card-table">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-inverse">
+                                        <thead>
+                                            <th>Name</th>
+                                            <th>Gender</th>
+                                            <th>Age</th>
+                                            <th>Contact #</th>
+                                            <th>Username</th>
+                                            <th>Privilege Type</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $_SESSION['userid'] = $userid;
+                                                $retriveUserQuery = "SELECT * FROM tbl_user WHERE archivestatus = 0 AND userid != '$userid'";
 
-                                    $result = mysqli_query($conn, $retriveUserQuery);
+                                                $result = mysqli_query($conn, $retriveUserQuery);
 
-                                    while($DataRows = mysqli_fetch_assoc($result)){
-                                        $firstname = $DataRows['firstname'];
-                                        $middlename = $DataRows['middlename'];
-                                        $lastname = $DataRows['lastname'];
-                                        $gender = $DataRows['gender'];
-                                        $birthdate = $DataRows['birthdate'];
-                                        $age = $DataRows['age'];
-                                        $contactnum = $DataRows['contactnum'];
-                                        $username = $DataRows['username'];
-                                        $password = $DataRows['password'];
-                                        $privilege = $DataRows['privilege'];
-                                        if($privilege == '1'){
-                                            $privilegeType = "Admin";
-                                        }
-                                        else{
-                                            $privilegeType = "User";
-                                        }
-                                        $archivestatus = $DataRows['archivestatus'];
-                                        $userid = $DataRows['userid'];
-                                ?>
-                                <tr>
-                                    <td><?php echo htmlentities($firstname.' '.$middlename.' '.$lastname); ?></td>
-                                    <td><?php echo htmlentities($gender); ?></td>
-                                    <td><?php echo htmlentities($age); ?></td>
-                                    <td><?php echo htmlentities($contactnum); ?></td>
-                                    <td><?php echo htmlentities($username); ?></td>
-                                    <td><?php echo htmlentities($privilegeType); ?></td>
-                                    <td class="text-center"><a href="" class="btn btn-warning"><i class="far fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;<a href="manage-user.php?archive=<?php echo $userid; ?>" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
-                                </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
+                                                while($DataRows = mysqli_fetch_assoc($result)){
+                                                    $firstname = $DataRows['firstname'];
+                                                    $middlename = $DataRows['middlename'];
+                                                    $lastname = $DataRows['lastname'];
+                                                    $gender = $DataRows['gender'];
+                                                    $birthdate = $DataRows['birthdate'];
+                                                    $age = $DataRows['age'];
+                                                    $contactnum = $DataRows['contactnum'];
+                                                    $username = $DataRows['username'];
+                                                    $password = $DataRows['password'];
+                                                    $privilege = $DataRows['privilege'];
+                                                    if($privilege == '1'){
+                                                        $privilegeType = "Admin";
+                                                    }
+                                                    else{
+                                                        $privilegeType = "User";
+                                                    }
+                                                    $archivestatus = $DataRows['archivestatus'];
+                                                    $userid = $DataRows['userid'];
+                                            ?>
+                                            <tr>
+                                                <td><?php echo htmlentities($firstname.' '.$middlename.' '.$lastname); ?></td>
+                                                <td><?php echo htmlentities($gender); ?></td>
+                                                <td><?php echo htmlentities($age); ?></td>
+                                                <td><?php echo htmlentities($contactnum); ?></td>
+                                                <td><?php echo htmlentities($username); ?></td>
+                                                <td><?php echo htmlentities($privilegeType); ?></td>
+                                                <td class="text-center"><a href="manage-user.php?archive=<?php echo $userid; ?>" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
+                                            </tr>
+                                        <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -319,6 +368,13 @@ $( function() {
                                 <div class="col-md-4">
                                     <label for="datepicker">Birthdate</label>
                                     <input type="text" class="form-control" name="birthdate" id="datepicker" placeholder="e.g. 03/01/2018">
+                                    <script>
+                                        var datepicker = $('#datepicker').datepicker({
+                                            uiLibrary: 'bootstrap4', 
+                                            iconsLibrary: 'fontawesome',
+                                            format: 'yyyy-mm-dd'
+                                        });
+                                    </script>
                                     <div class="invalid-feedback">
                                         Required field!
                                     </div>

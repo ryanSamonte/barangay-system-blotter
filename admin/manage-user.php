@@ -45,10 +45,47 @@
             else{
                 $gender = 'F';
             }
-        $birthdate = date_create(mysqli_real_escape_string($conn, $_POST['birthdate']));
-        $birthdateNewFormat = date_format($birthdate, "Y-m-d");
+        $birthdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
+
+        $date = new DateTime($birthdate);
+        $now = new DateTime();
+
+        $extractDate = "SELECT EXTRACT(YEAR FROM '$birthdate') AS 'yearInput', EXTRACT(MONTH FROM '$birthdate') AS 'monthInput', EXTRACT(DAY FROM '$birthdate') AS 'dayInput', EXTRACT(YEAR FROM NOW()) AS 'yearNow', EXTRACT(MONTH FROM NOW()) AS 'monthNow', EXTRACT(DAY FROM NOW()) AS 'dayNow'";
+
+        $resultDate = mysqli_query($conn, $extractDate);
+
+        while($DataRows = mysqli_fetch_assoc($resultDate)){
+            $yearInput = $DataRows['yearInput'];
+            $monthInput = $DataRows['monthInput'];
+            $dayInput = $DataRows['dayInput'];
+
+            $yearNow = $DataRows['yearNow'];
+            $monthNow = $DataRows['monthNow'];
+            $dayNow = $DataRows['dayNow'];
+        }
+
+        if($date > $now){
+            $_SESSION['errorMessage'] = "Invalid date input!";
+        }
+        else{
+            if($monthInput < $monthNow){
+                $age = $yearNow - $yearInput;
+            }
+            else if($monthInput > $monthNow){
+                $age = (($yearNow - 1) - $yearInput);
+            }
+            else{
+                if($dayInput < $dayNow){
+                    $age = $yearNow - $yearInput;
+                }
+                else{
+                    $age = (($yearNow - 1) - $yearInput);
+                }
+            }
+        }
+
         $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
-        $profileimg = $_FILES['profileimg']['name'];
+        $profileimgins = $_FILES['profileimg']['name'];
         $move_location = "../uploads/".basename($_FILES["profileimg"]["name"]);
         $username = mysqli_real_escape_string($conn, $_POST['username']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
@@ -69,7 +106,7 @@
             $_SESSION['errorMessage'] = "Username already exists!";
         }
         else{
-            $insertUserQuery = "INSERT INTO `tbl_user`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `username`, `password`, `privilege`, `archivestatus`, `profileimg`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdateNewFormat', DATEDIFF(CURRENT_DATE(), '$birthdateNewFormat') / 365 ,'$contactnum','$username','$password','$privilegeTypeNum','0', '$profileimg')";
+            $insertUserQuery = "INSERT INTO `tbl_user`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `username`, `password`, `privilege`, `archivestatus`, `profileimg`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdate', '$age' ,'$contactnum','$username','$password','$privilegeTypeNum','0', '$profileimgins')";
         
             if(mysqli_query($conn, $insertUserQuery)){
                 $_SESSION['successMessage'] = "New user successfully added!";
@@ -129,7 +166,7 @@
         <section id="admin-header">
             <nav class="navbar navbar-expand-xl p-0">
                 <div class="container">
-                    <a href="" class="navbar-brand">
+                    <a href="admin.php" class="navbar-brand">
                         <img src="../img/sipac-logo.png" alt="" width="70px" class="brand-pic">
                         <p class="h4 p-brand">BrgySipac</p>
                     </a>
@@ -149,7 +186,7 @@
                             </li>
 
                             <li class="nav-item nav-li mr-3">
-                                <a href="#developer" class="nav-link link"><i class="fas fa-handshake"></i>&nbsp;Summon</a>
+                                <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
                             </li>
 
                             <li class="nav-item nav-li mr-3">
@@ -161,9 +198,9 @@
                                 <i class="fas fa-cogs"></i>&nbsp;Maintenance
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Manage Blotter</a>
+                                    <a href="blotter-history.php" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Blotter History</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link active"><i class="fas fa-user"></i>&nbsp;&nbsp;Manage User</a>
+                                    <a href="manage-user.php" class="nav-link link active"><i class="fas fa-user"></i>&nbsp;&nbsp;User Account</a>
                                 </div>
                             </li>
 
@@ -172,7 +209,7 @@
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
                                     <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
                                 </div>
@@ -256,7 +293,7 @@
                                                 <td><?php echo htmlentities($contactnum); ?></td>
                                                 <td><?php echo htmlentities($username); ?></td>
                                                 <td><?php echo htmlentities($privilegeType); ?></td>
-                                                <td class="text-center"><a href="" class="btn btn-warning"><i class="far fa-edit"></i>&nbsp;Update</a>&nbsp;&nbsp;<a href="manage-user.php?archive=<?php echo $userid; ?>" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
+                                                <td class="text-center"><a href="manage-user.php?archive=<?php echo $userid; ?>" class="btn btn-danger"><i class="far fa-file-archive"></i>&nbsp;Archive</a></td>
                                             </tr>
                                         <?php } ?>
                                         </tbody>

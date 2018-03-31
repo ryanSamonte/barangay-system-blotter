@@ -27,55 +27,10 @@
     else{
         echo "<script>window.location.href='../login.php';</script>";
     }
+?>
 
-    if(ISSET($_POST['save_blotter'])){
-        $incident_place_inside = mysqli_real_escape_string($conn, $_POST['incident_place_inside']);
-        $incident_place_outside = mysqli_real_escape_string($conn, $_POST['incident_place_outside']);
-        $updateCount = 0;
-
-        if($incident_place_outside != ""){
-            $incident_place = $incident_place_outside;
-            $updateBlotterCountOutside = "UPDATE tbl_street SET blotter_count = blotter_count + 1 WHERE street_desc = 'Others' ";
-                if(mysqli_query($conn, $updateBlotterCountOutside)){
-                    $updateCount = 1;
-                }
-        }
-        else{
-            $incident_place = $incident_place_inside;
-            $updateBlotterCountInside = "UPDATE tbl_street SET blotter_count = blotter_count + 1 WHERE street_desc = '$incident_place_inside'";
-                if(mysqli_query($conn, $updateBlotterCountInside)){
-                    $updateCount = 1;
-                }
-        }
-
-        $incident_details = mysqli_real_escape_string($conn, $_POST['incident_details']);
-
-        $countBlotter = "SELECT blotter_id AS blotterCount FROM tbl_blotter_details ORDER BY blotter_id DESC LIMIT 1";
-        
-        $resultCountBlotter = mysqli_query($conn, $countBlotter);
-
-        while($DataRows = mysqli_fetch_assoc($resultCountBlotter)){
-            $blotterCount = $DataRows['blotterCount'];
-        }
-
-        if($blotterCount == 0){
-            $blotterID = 1;
-        }
-        else{
-            $blotterID = $blotterCount + 1;
-        }
-
-        $insertBlotterDetails = "INSERT INTO tbl_blotter_details VALUES('$blotterID', '$incident_place', '$incident_details', 'N', 'N', '0', '0')";
-        
-        if((mysqli_query($conn, $insertBlotterDetails)) && ($updateCount == 1)){
-            $_SESSION['successMessage'] = "Blotter details successfully added!";
-
-            header("Refresh: 3;url=complainant-info.php?bID=$blotterID");
-        }
-        else{
-            $_SESSION['errorMessage'] = "Dito".mysqli_error($conn);
-        }
-    }
+<?php
+    global $conn;
 ?>
 
 <!DOCTYPE html>
@@ -100,22 +55,22 @@
           integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
           crossorigin="anonymous"></script>
         <script src="semantic/dist/semantic.min.js"></script>
+        <script src='js/jquery-3.3.1.min.js'></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="js/index.js"></script>
-
+        <script src="../js/index.js"></script>
         <script>
             
-//   $( function() {
-//     $( "#datepicker" ).datepicker();
-//   } );
-$( function() {
-    $( "#datepicker" ).datepicker( "yy-mm-dd", "dateFormat", $( this ).val() );
-});
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
         </script>
     </head>
     <body>
         <section id="admin-header">
+            <div class="overlay">
             <nav class="navbar navbar-expand-xl p-0 navigation">
                 <div class="container">
                     <a href="admin.php" class="navbar-brand mr-5">
@@ -134,25 +89,25 @@ $( function() {
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
-                                <a href="#about" class="nav-link link active"><i class="fas fa-clipboard"></i>&nbsp;File Blotter</a>
+                                <a href="file-blotter.php" class="nav-link link"><i class="fas fa-clipboard"></i>&nbsp;File Blotter</a>
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
-                                <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
+                                <a href="manage-blotter.php" class="nav-link link active"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
                                 <a href="manage-resident.php" class="nav-link link"><i class="fas fa-id-card"></i>&nbsp;Resident</a>
                             </li>
 
-                            <li class="nav-item mr-3 dropdown nav-li">
+                            <li class="nav-item dropdown nav-li mr-3">
                                 <a class="nav-link dropdown-toggle link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cogs"></i>&nbsp;Maintenance
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a href="blotter-history.php" class="nav-link link"><i class="fas fa-pen-square"></i>&nbsp;&nbsp;Blotter History</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link active"><i class="fas fa-user"></i>&nbsp;&nbsp;User Account</a>
+                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-user"></i>&nbsp;&nbsp;User Account</a>
                                 </div>
                             </li>
 
@@ -161,7 +116,7 @@ $( function() {
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="#developer" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
                                     <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
                                 </div>
@@ -183,76 +138,130 @@ $( function() {
                     </div>
                 </div>
             </nav>
+          </div>
         </section>
 
-        <section id="file-blotter">
-            <div class="container mb-5">
+        
+        <section id="add-family-member">
+            <div class="container">
             <?php echo errorMessage(); echo successMessage(); ?>
                 <div class="row">
-                    <div class="card card-table" style="padding-left:0px;padding-right:0px;">
-                        <div class="card-header card-table-header">
-                            <h1>Blotter Details</h1>
-                        </div>
-                        <div class="card-body">
+                    <div class="col">
+                        <div class="card card-table mb-5" style="padding-left:0px; padding-right:0px;">
+                            <div class="card-header card-table-header">
+                                <h1 class="card-title" id="exampleModalLabel">Blotter Details</h1>
+                            </div>
+
+                            <?php
+                                if(ISSET($_GET['bId'])){
+                                    $blotterIDFromURL = $_GET['bId'];
+                                }
+
+                                $retriveBlotterInfo = "SELECT * FROM tbl_blotter_details WHERE blotter_id = '$blotterIDFromURL'";
+
+                                $result = mysqli_query($conn, $retriveBlotterInfo);
+
+                                while($DataRows = mysqli_fetch_assoc($result)){
+                                    $blotter_id = $DataRows['blotter_id'];
+                                    $incident_place = $DataRows['incident_place'];
+                                    $incident_details = $DataRows['incident_details'];
+                                    $summon_date = $DataRows['summon_date'];
+                                    $summon_time = $DataRows['summon_time'];
+                            ?>
+
+                            <div class="card-body">
                                 <div class="container">
-                                    <form class="needs-validation" action="file-blotter.php" method="POST" id="add-resident-form" novalidate>
-                                       <div class="form-row mb-3">
-                                            <div class="col-md-7">
-                                                <label for="lastname">Incident place&nbsp;&nbsp;<span class="text-muted"><p class="lead" style="display:inline-block;font-size:12px;">(inside the barangay)</p></span></label>
-                                                <select class="form-control" name="incident_place_inside" required>
-                                                <?php
-                                                    $retrieveStreet = "SELECT * FROM tbl_street";
-
-                                                    $resultStreet = mysqli_query($conn, $retrieveStreet);
-
-                                                    while($DataRows = mysqli_fetch_assoc($resultStreet)){
-                                                        $streetName = $DataRows['street_desc'];
-                                                ?>
-                                                    <option value="<?php echo $streetName; ?>"><?php echo $streetName; ?></option>
-                                                <?php } ?>
-                                                </select>
+                                    <form class="needs-validation" action="add-family-member.php?id=<?php echo $householdheadid; ?>" method="post" id="add-resident-form" novalidate>
+                                        <div class="form-row mb-3">
+                                            <div class="col">
+                                                <label for="lastname">Incident place</label>
+                                                <input type="text" class="form-control" value="<?php echo $incident_place; ?>" disabled>
                                             </div>
-                                            <div class="col-md-5">
-                                                <label for="lastname">Others&nbsp;&nbsp;<span class="text-muted"><p class="lead" style="display:inline-block;font-size:12px;">(please specify)</p></span></label>
-                                                <input type="text" class="form-control" name="incident_place_outside">
+                                        </div>
+                                        <div class="form-row mb-3">
+                                            <div class="col">
+                                                <label for="lastname">Incident details</label>
+                                                <textarea type="text" class="form-control" rows="8" disabled><?php echo $incident_details; ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mb-3">
+                                            <div class="col">
+                                                <label for="lastname">Complainant(s)</label>
+                                                <textarea type="text" class="form-control" rows="5" disabled><?php
+                                                    $retrieveComplainant = "SELECT * FROM tbl_complainant WHERE blotter_id = '$blotterIDFromURL'";
+
+                                                    $resultComplainant = mysqli_query($conn, $retrieveComplainant);
+
+                                                    while($DataRows = mysqli_fetch_assoc($resultComplainant)){
+                                                        $lastname = $DataRows['lastname'];
+                                                        $firstname = $DataRows['firstname'];
+                                                        $middlename = $DataRows['middlename'];
+
+                                                        echo $lastname.", ".$firstname." ".$middlename."\n";
+                                                    }
+                                                ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mb-3">
+                                            <div class="col">
+                                                <label for="lastname">Respondent(s)</label>
+                                                <textarea type="text" class="form-control" rows="5" disabled><?php
+                                                    $retrieveComplainant = "SELECT * FROM tbl_respondent WHERE blotter_id = '$blotterIDFromURL'";
+
+                                                    $resultComplainant = mysqli_query($conn, $retrieveComplainant);
+
+                                                    while($DataRows = mysqli_fetch_assoc($resultComplainant)){
+                                                        $lastname = $DataRows['lastname'];
+                                                        $firstname = $DataRows['firstname'];
+                                                        $middlename = $DataRows['middlename'];
+
+                                                        echo $lastname.", ".$firstname." ".$middlename."\n";
+                                                    }
+                                                ?></textarea>
                                             </div>
                                         </div>
 
                                         <div class="form-row mb-3">
-                                            <div class="col">
-                                                <label for="gender">Incident Details</label>
-                                                <textarea class="form-control" rows="10" name="incident_details" required></textarea>
-                                                <div class="invalid-feedback">
-                                                    Required field!
-                                                </div>
+                                            <div class="col-md-6">
+                                                <label for="lastname">Summon date</label>
+                                                <input type="text" class="form-control" value="<?php echo $summon_date; ?>" disabled>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="lastname">Summon time</label>
+                                                <input type="text" class="form-control" value="<?php echo $summon_time; ?>" disabled>
                                             </div>
                                         </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="submit" name="save_blotter" class="btn btn-success"><i class="far fa-check-circle"></i> Save changes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
                                 </div>
-                                    </form>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a href="complainant-summon.php?bID=<?php echo $blotter_id; ?>" class="btn btn-success btn-block" target="_blank"><i class="far fa-handshake"></i>&nbsp;Generate summon for Complainant</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a href="respondent-summon.php?bID=<?php echo $blotter_id; ?>" class="btn btn-danger btn-block" target="_blank"><i class="far fa-handshake"></i>&nbsp;Generate summon for Respondent</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                </form>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </section>
 
-        
         <footer id="main-footer">
             <div class="container">
                 <div class="row">
                     <div class="col text-center my-3">
                         <img src="../img/sipac-logo.png" alt="nnhs-logo" class="img-fluid" width="50px">
-                        <p class="cdate" style="font-size: 15px; display:inline-block;">&copy; <?php echo date("Y"); ?></p>
+                        <p class="cdate" style="font-size: 15px; display:inline-block;">&copy; 2018</p>
                     </div>
                 </div>
             </div>
         </footer>
-        
-        
+
         <script>
                 (function() {
                     'use strict';
