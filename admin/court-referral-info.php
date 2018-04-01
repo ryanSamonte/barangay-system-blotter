@@ -117,37 +117,11 @@ $pdf->SetFont('times','', 8);
 $pdf->Cell(25,5,'', 0, 1);
 $pdf->Cell(170,5, "Note: Not valid without seal", 0, 1, 'R');
 
-// $pdf->Cell(25,10,'', 0, 1);
-// $pdf->SetFont('times','U', 12);
-// $pdf->Cell(170,10, 'ANTONIO BRAINARDO P. LINANG', 0, 1, 'R');
-// $pdf->SetFont('times','B', 10);
-// $pdf->Cell(168,10, 'Punong Barangay/Tagapangulo ng Lupon', 0, 1, 'R');
-// $pdf->Cell(170,10,'---------------------------------------------------------------------------------------------------------------------------------------------', 0, 1, 'R');
-// $pdf->SetFont('times','B', 10);
-// $pdf->Cell(170,10, 'ULAT NG OPISYAL NA NAGDALA NG PATAWAG', 0, 1, 'C');
-// $pdf->Cell(170,10, 'Inihatid ko ang patawag na ito sa nagsusumbong na si ________________________________________________.', 0, 1, 'L');
+$dateNow = "SELECT EXTRACT(YEAR FROM NOW()) AS 'yearNow', MONTHNAME(NOW()) AS 'monthNow', EXTRACT(DAY FROM NOW()) AS 'dayNow', EXTRACT(HOUR FROM NOW()) AS 'hourNow', EXTRACT(MINUTE FROM NOW()) AS 'minNow'";
 
-// $dateNow = "SELECT EXTRACT(YEAR FROM NOW()) AS 'yearNow', MONTHNAME(NOW()) AS 'monthNow', EXTRACT(DAY FROM NOW()) AS 'dayNow', EXTRACT(HOUR FROM NOW()) AS 'hourNow', EXTRACT(MINUTE FROM NOW()) AS 'minNow'";
+$resultDateNow = mysqli_query($conn, $dateNow);
 
-// $resultDateNow = mysqli_query($conn, $dateNow);
-
-// while($DataRows = mysqli_fetch_array($resultDateNow)){
-//     $pdf->Cell(170,5, "Ngayong ika-".$DataRows['dayNow']." ng ".$DataRows['monthNow'].", ".$DataRows['yearNow'].", sa pamamagitan ng:", 0, 1, 'J');
-//     $pdf->SetFont('times','B', 9);
-//     $pdf->Cell(170,5, "(Isulat ang (mga) pangalan ng nagrereklamo sa paraan kung paano ito ipinarating sa kanya/kanila.)", 0, 1, 'J');
-//     $pdf->SetFont('times','B', 10);
-//     $pdf->Cell(170,5, "_____________1. Iniabot ko ng tuwiran sa kanya/kanila ang patawag, o", 0, 1, 'J');
-//     $pdf->Cell(170,5, "_____________2. Iniabot ko sa kanya/kanila ang patawag at siya/sila ay tumangging tanggapin ito, o", 0, 1, 'J');
-//     $pdf->Cell(170,5, "_____________3. Iniwan ko ang patawag sa isang taong nasa hustong gulang at may sariling pagpapasiya", 0, 1, 'J');
-//     $pdf->Cell(170,5, "na naninirahan sa bahay ng isinusumbong, o", 0, 1, 'J');
-//     $pdf->Cell(170,5, "_____________4. Iniwan ko ang patawag sa kanya/kanilang opisina/lugar ng hanapbuhay ", 0, 1, 'J');
-//     $pdf->Cell(170,5, "kay_______________________________(pangalan)Isang taong namamahala sa tanggapan/hanapbuhay.", 0, 1, 'J');
-
-//     $pdf->Cell(25,10,'', 0, 1);
-//     $pdf->SetFont('times','B', 10);
-//     $pdf->Cell(168,5, '_________________________________________', 0, 1, 'R');
-//     $pdf->Cell(163,5, 'Lagda ng Opisyal na nagdala ng patawag', 0, 1, 'R');
-
-$pdf->Output('I');
-// }
+while($DataRows = mysqli_fetch_array($resultDateNow)){
+    $pdf->Output('I', $DataRows['yearNow']."_".$DataRows['monthNow']."_".$DataRows['dayNow']."_".$DataRows['hourNow']."_".$DataRows['minNow']."_court_referral.pdf");
+}
 ?>

@@ -105,7 +105,9 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a href="court-referral.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <a href="summon-resolution.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="resident-list.php" class="nav-link link"><i class="fas fa-users"></i>&nbsp;&nbsp;Resident List</a>
                                 </div>
                             </li>
                         </ul>
@@ -131,9 +133,9 @@
         <section id="dashboard" class="mb-5">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <a href="manage-resident.php">
-                        <div class="card text-center" style="width: 100%;">
+                        <div class="card text-center mb-3" style="width: 100%;">
                             <div class="card-header count-header-cont">
                                 <h5 class="card-title count-title">Resident/s</h5>
                             </div>
@@ -153,40 +155,45 @@
                         </a>
                     </div>
 
-                    <div class="col-md-3">
-                        <a href="login.html">
-                        <div class="card text-center" style="width: 100%;">
+                    <div class="col-md-4">
+                        <a href="manage-blotter.php">
+                        <div class="card text-center mb-3" style="width: 100%;">
                             <div class="card-header count-header-cont" style="background-color: #F39C12;">
                                 <h5 class="card-title count-title">Blotter/s</h5>
                             </div>
                             <div class="card-body count-blotter">
-                                <p class="card-text count-lbl"><i class="fas fa-clipboard link-icon"></i>&nbsp;&nbsp;20</p>
+                                <?php
+                                    $retrieveBlotterCountQuery = "SELECT COUNT(*) AS 'blotterCount' FROM tbl_blotter_details WHERE (CAST(CONCAT(summon_date, ' ', summon_time) AS datetime) >= NOW()) AND archive_status = 0 AND isResolved = 'N'";
+
+                                    $result = mysqli_query($conn, $retrieveBlotterCountQuery);
+
+                                    while($DataRows = mysqli_fetch_assoc($result)){
+                                        $blottercount = $DataRows['blotterCount'];
+                                ?>
+                                <p class="card-text count-lbl"><i class="fas fa-clipboard link-icon"></i>&nbsp;&nbsp;<?php echo htmlentities($blottercount); ?></p>
+                                <?php } ?>
                             </div>
                         </div>
                         </a>
                     </div>
 
-                    <div class="col-md-3">
-                        <a href="login.html">
-                        <div class="card text-center" style="width: 100%;">
-                            <div class="card-header count-header-cont" style="background-color: #37BD28;">
-                                <h5 class="card-title count-title">Summon/s</h5>
-                            </div>
-                            <div class="card-body count-summon">
-                                <p class="card-text count-lbl"><i class="fas fa-handshake"></i>&nbsp;&nbsp;20</p>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-3">
-                        <a href="login.html">
-                        <div class="card text-center" style="width: 100%;">
+                    <div class="col-md-4">
+                        <a href="blotter-history.php">
+                        <div class="card text-center mb-3" style="width: 100%;">
                             <div class="card-header count-header-cont" style="background-color: #F03434;">
-                                <h5 class="card-title count-title">Pending Blotter/s</h5>
+                                <h5 class="card-title count-title">Blotter History</h5>
                             </div>
                             <div class="card-body count-pending-blotter">
-                                <p class="card-text count-lbl"><i class="fas fa-calendar-times"></i>&nbsp;&nbsp;20</p>
+                                <?php
+                                    $retrieveBlotterHistoCountQuery = "SELECT COUNT(*) AS 'blotterHistoCount' FROM tbl_blotter_details WHERE (CAST(CONCAT(summon_date, ' ', summon_time) AS datetime) < NOW()) AND archive_status = 0";
+
+                                    $result = mysqli_query($conn, $retrieveBlotterHistoCountQuery);
+
+                                    while($DataRows = mysqli_fetch_assoc($result)){
+                                        $blotterhistocount = $DataRows['blotterHistoCount'];
+                                ?>
+                                <p class="card-text count-lbl"><i class="fas fa-archive"></i>&nbsp;&nbsp;<?php echo htmlentities($blotterhistocount); ?></p>
+                                <?php } ?>
                             </div>
                         </div>
                         </a>
@@ -195,10 +202,86 @@
             </div>
         </section>
 
-        <section>
+        <section class="mb-5">
             <div class="container">
                 <div class="row">
-                    <!-- .col -->
+                    <div class="col-md-8">
+                        <div class="card card-table" style="padding-left:0px;padding-right:0px;">
+                            <div class="card-header card-table-header">
+                                <h1>Blotter Record per Street</h1>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                <table class="table table-hover table-inverse text-center">
+                                        <thead>
+                                            <th>No</th>
+                                            <th>Street Name</th>
+                                            <th>Incident Count</th>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $retrieveStreet = "SELECT * FROM tbl_street WHERE street_desc != 'Others' ORDER BY blotter_count DESC";
+                                                $no = 0;
+                                                $result = mysqli_query($conn, $retrieveStreet);
+
+                                                while($DataRows = mysqli_fetch_assoc($result)){
+                                                    $street_id = $DataRows['street_id'];
+                                                    $street_desc = $DataRows['street_desc'];
+                                                    $blotter_count = $DataRows['blotter_count'];
+                                                    $no++;
+                                                ?>
+                                            <tr>
+                                                <td class="p-1"><?php echo htmlentities($no); ?></td>
+                                                <td class="p-1"><?php echo htmlentities($street_desc); ?></td>
+                                                <td class="p-1"><?php echo htmlentities($blotter_count); ?></td>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-table" style="padding-left:0px;padding-right:0px;">
+                            <div class="card-header card-table-header">
+                                <h1 style="font-size: 23px;">Upcoming Summon</h1>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                <table class="table table-hover table-inverse text-center">
+                                        <thead>
+                                            <th>No</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $retrieveBlotter = "SELECT * FROM tbl_blotter_details WHERE (CAST(CONCAT(summon_date, ' ', summon_time) AS datetime) >= NOW()) AND archive_status = 0 AND isResolved = 'N' ORDER BY CAST(CONCAT(summon_date, ' ', summon_time) AS datetime) ASC LIMIT 9";
+                                                $no = 0;
+
+                                                $result = mysqli_query($conn, $retrieveBlotter);
+
+                                                while($DataRows = mysqli_fetch_assoc($result)){
+                                                    $blotter_id = $DataRows['blotter_id'];
+                                                    $incident_place = $DataRows['incident_place'];
+                                                    $incident_details = $DataRows['incident_details'];
+                                                    $summon_date = $DataRows['summon_date'];
+                                                    $summon_time = $DataRows['summon_time'];
+                                                    $no++;
+                                                ?>
+                                            <tr>
+                                                <td class="p-1"><?php echo htmlentities($no); ?></td>
+                                                <td class="p-1"><?php echo htmlentities($summon_date); ?></td>
+                                                <td class="p-1"><?php echo htmlentities($summon_time); ?></td>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -213,13 +296,6 @@
                 </div>
             </div>
         </footer>
-
-        
-
-        <a href="javascript:" id="return-to-top" class="top-arr">
-            <i class="fas fa-chevron-up"></i>
-        </a>
-
         <!-- <script src="js/index.js"></script> -->
         <script src='js/jquery-3.3.1.min.js'></script>
     </body>

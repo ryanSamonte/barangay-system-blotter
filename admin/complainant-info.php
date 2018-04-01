@@ -277,7 +277,7 @@ $( function() {
                         <form class="needs-validation" action="complainant-info.php?bID=<?php echo $blotterIDfromURL; ?>" method="post" id="add-non-resident-form" novalidate>
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="lastname">Last name</label>
+                                    <label for="lastname" class="input-label">Last name</label>
                                     <input type="text" class="form-control" name="lastname" id="lastname" placeholder="e.g. Dela Cruz" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -285,7 +285,7 @@ $( function() {
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="firstname">First name</label>
+                                    <label for="firstname" class="input-label">First name</label>
                                     <input type="text" class="form-control" name="firstname" id="firstname" placeholder="e.g. Juan" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -293,7 +293,7 @@ $( function() {
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="middlename">Middle name</label>
+                                    <label for="middlename" class="input-label">Middle name</label>
                                     <input type="text" class="form-control" name="middlename" id="middlename" placeholder="e.g. Marcial" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -303,7 +303,7 @@ $( function() {
 
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="gender">Gender</label>
+                                    <label for="gender" class="input-label">Gender</label>
                                     <select name="gender" id="gender" class="form-control">
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -311,7 +311,7 @@ $( function() {
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="datepicker">Age</label>
+                                    <label for="datepicker" class="input-label">Age</label>
                                     <input type="text" class="form-control" name="age" placeholder="e.g. 18" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -319,7 +319,7 @@ $( function() {
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="contactnum">Contact number</label>
+                                    <label for="contactnum" class="input-label">Contact number</label>
                                     <input type="text" class="form-control" name="contactnum" id="contactnum" placeholder="e.g. 09123456789" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -329,7 +329,7 @@ $( function() {
 
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="occupation">Occupation</label>
+                                    <label for="occupation" class="input-label">Occupation</label>
                                     <input type="text" class="form-control" name="occupation" id="occupation" placeholder="e.g. Manager" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -337,7 +337,7 @@ $( function() {
                                 </div>
                                 
                                 <div class="col-md-3">
-                                    <label for="housenum">House number</label>
+                                    <label for="housenum" class="input-label">House number</label>
                                     <input type="text" class="form-control" name="housenum" id="housenum" placeholder="e.g. 47" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -345,7 +345,7 @@ $( function() {
                                 </div>
 
                                 <div class="col-md-5">
-                                    <label for="streetname">Street name</label>
+                                    <label for="streetname" class="input-label">Street name</label>
                                     <input type="text" class="form-control" name="streetname" id="streetName" placeholder="e.g. San Rafael" required>
                                     <div class="invalid-feedback">
                                         Required field!

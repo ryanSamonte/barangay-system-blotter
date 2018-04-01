@@ -93,6 +93,12 @@ tbody{
     margin: 0px;
 }
 
+.input-label{
+    text-transform: capitalize;
+    font-family: 'Century Gothic';
+    font-size: 15px;
+}
+
 /*************************** LOGIN PAGE STYLE *********************************/
 
 
@@ -141,10 +147,19 @@ tbody{
 }
 
 #login-section .btn-submit{
+    font-family: 'Century Gothic';
+    text-transform: uppercase;
     margin-top: 35px;
     margin-bottom: 40px;
     margin: 0 auto;
+    color: #34383c;
     background-color: #2FDAB8;
+}
+
+#login-section .btn-submit:hover{
+    color: white;
+    background-color: rgb(37, 179, 150);
+    transition: .5s;
 }
 /*************************** LOGIN PAGE STYLE END *********************************/
 

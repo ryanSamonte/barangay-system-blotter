@@ -82,40 +82,40 @@
                     $age = (($yearNow - 1) - $yearInput);
                 }
             }
-        }
 
-        $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
-        $profileimgins = $_FILES['profileimg']['name'];
-        $move_location = "../uploads/".basename($_FILES["profileimg"]["name"]);
-        $username = mysqli_real_escape_string($conn, $_POST['username']);
-        $password = mysqli_real_escape_string($conn, $_POST['password']);
-        $privilegeType = mysqli_real_escape_string($conn, $_POST['privilegeType']);
-            if($privilegeType == "Admin"){
-                $privilegeTypeNum = 1;
+            $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
+            $profileimgins = $_FILES['profileimg']['name'];
+            $move_location = "../uploads/".basename($_FILES["profileimg"]["name"]);
+            $username = mysqli_real_escape_string($conn, $_POST['username']);
+            $password = mysqli_real_escape_string($conn, $_POST['password']);
+            $privilegeType = mysqli_real_escape_string($conn, $_POST['privilegeType']);
+                if($privilegeType == "Admin"){
+                    $privilegeTypeNum = 1;
+                }
+                else{
+                    $privilegeTypeNum = 2;
+                }
+            
+            $existingUsernameQuery = "SELECT * FROM tbl_user WHERE username = '$username'";
+            
+            $result = mysqli_query($conn, $existingUsernameQuery);
+            $result_num_row = mysqli_num_rows($result);
+            
+            if($result_num_row > 0){
+                $_SESSION['errorMessage'] = "Username already exists!";
             }
             else{
-                $privilegeTypeNum = 2;
-            }
-        
-        $existingUsernameQuery = "SELECT * FROM tbl_user WHERE username = '$username'";
-        
-        $result = mysqli_query($conn, $existingUsernameQuery);
-        $result_num_row = mysqli_num_rows($result);
-        
-        if($result_num_row > 0){
-            $_SESSION['errorMessage'] = "Username already exists!";
-        }
-        else{
-            $insertUserQuery = "INSERT INTO `tbl_user`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `username`, `password`, `privilege`, `archivestatus`, `profileimg`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdate', '$age' ,'$contactnum','$username','$password','$privilegeTypeNum','0', '$profileimgins')";
-        
-            if(mysqli_query($conn, $insertUserQuery)){
-                $_SESSION['successMessage'] = "New user successfully added!";
-            }
-            else{
-                $_SESSION['errorMessage'] = mysqli_error($conn);
-            }
+                $insertUserQuery = "INSERT INTO `tbl_user`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `username`, `password`, `privilege`, `archivestatus`, `profileimg`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdate', '$age' ,'$contactnum','$username','$password','$privilegeTypeNum','0', '$profileimgins')";
+            
+                if(mysqli_query($conn, $insertUserQuery)){
+                    $_SESSION['successMessage'] = "New user successfully added!";
+                }
+                else{
+                    $_SESSION['errorMessage'] = mysqli_error($conn);
+                }
 
-            move_uploaded_file($_FILES["profileimg"]["tmp_name"], $move_location);
+                move_uploaded_file($_FILES["profileimg"]["tmp_name"], $move_location);
+            }
         }
     }
 
@@ -209,9 +209,11 @@
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="court-referral.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <a href="summon-resolution.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="resident-list.php" class="nav-link link"><i class="fas fa-users"></i>&nbsp;&nbsp;Resident List</a>
                                 </div>
                             </li>
                         </ul>
@@ -246,7 +248,10 @@
 
                 <div class="row">
                     <div class="col">
-                        <div class="card card-table">
+                        <div class="card card-table" style="padding-left:0px; padding-right:0px;">
+                            <div class="card-header card-table-header">
+                                <h1 class="card-title" id="exampleModalLabel">User Account</h1>
+                            </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-hover table-inverse">
@@ -332,7 +337,7 @@
                         <form class="needs-validation" novalidate action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="add-resident-form" method="post" enctype="multipart/form-data">
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="lastName">Last name</label>
+                                    <label for="lastName" class="input-label">Last name</label>
                                     <input type="text" class="form-control" name="lastname" id="lastname" placeholder="e.g. Dela Cruz" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -340,7 +345,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="firstName">First name</label>
+                                    <label for="firstName" class="input-label">First name</label>
                                     <input type="text" class="form-control" name="firstname" id="firstname" placeholder="e.g. Juan" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -348,7 +353,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="middleName">Middle name</label>
+                                    <label for="middleName" class="input-label">Middle name</label>
                                     <input type="text" class="form-control" name="middlename" id="middlename" placeholder="e.g. Marcial" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -358,7 +363,7 @@
 
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="gender">Gender</label>
+                                    <label for="gender" class="input-label">Gender</label>
                                     <select name="gender" class="form-control">
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -366,7 +371,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="datepicker">Birthdate</label>
+                                    <label for="datepicker" class="input-label">Birthdate</label>
                                     <input type="text" class="form-control" name="birthdate" id="datepicker" placeholder="e.g. 03/01/2018">
                                     <script>
                                         var datepicker = $('#datepicker').datepicker({
@@ -381,7 +386,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="contactNum">Contact number</label>
+                                    <label for="contactNum" class="input-label">Contact number</label>
                                     <input type="text" class="form-control" name="contactnum" id="contactnum" placeholder="e.g. 09123456789" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -391,7 +396,7 @@
                             
                             <div class="form-row mb-3">
                                 <div class="col">
-                                <label for="profileimg" class="field-label">Profile Picture&nbsp;&nbsp;&nbsp;<span class="text-muted"><small>Preferred size: (400x300) pixels</small></span></label>
+                                <label for="profileimg" class="input-label">Profile Picture&nbsp;&nbsp;&nbsp;<span class="text-muted"><small>Preferred size: (400x300) pixels</small></span></label>
                                     <input type="file" class="form-control" name="profileimg" id="profileimg" placeholder="e.g. juan001" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -401,7 +406,7 @@
 
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="username">Username</label>
+                                    <label for="username" class="input-label">Username</label>
                                     <input type="text" class="form-control" name="username" id="username" placeholder="e.g. juan001" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -409,7 +414,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="password">Password</label>
+                                    <label for="password" class="input-label">Password</label>
                                     <input type="password" class="form-control" name="password" id="password" placeholder="e.g. 1234" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -417,7 +422,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="streetName">Privilege</label>
+                                    <label for="streetName" class="input-label">Privilege</label>
                                     <select name="privilegeType" id="privilegeType" class="form-control">
                                         <option value="Admin">Admin</option>
                                         <option value="User">User</option>
@@ -435,10 +440,6 @@
                 </div>
             </div>
         </section>
-
-        <a href="javascript:" id="return-to-top" class="top-arr">
-            <i class="fas fa-chevron-up"></i>
-        </a>
 
         <script>
                 (function() {

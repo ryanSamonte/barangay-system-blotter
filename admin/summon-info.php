@@ -40,10 +40,8 @@
         $date = new DateTime($summondate);
         $now = new DateTime();
 
-        if(($summonhour > 24 || $summonmin > 59)){
+        if(($summonhour > 24 || $summonmin > 59) || ($date < $now)){
             $_SESSION['errorMessage'] = "Invalid date/time input!";
-            echo $summontime;
-            echo $summondate;
         }
         else{
             $summonCountQuery = "SELECT COUNT(*) AS summonCount FROM `tbl_blotter_details` 
@@ -147,7 +145,7 @@
                                         <form class="needs-validation" action="summon-info.php?bID=<?php echo $blotterIDfromURL; ?>" method="post" id="add-resident-form" novalidate>
                                             <div class="form-row mb-5">
                                                 <div class="col">
-                                                    <label for="datepicker">Date</label>
+                                                    <label for="datepicker" class="input-label">Date</label>
                                                     <input type="text" class="form-control" name="summondate" id="datepicker" placeholder="e.g. 2018/02/14" required>
                                                         <script>
                                                             var datepicker = $('#datepicker').datepicker({
@@ -166,14 +164,14 @@
 
                                             <div class="form-row">
                                                 <div class="col-md-6">
-                                                    <label for="firstname">Time (Hours) <p class="text-muted" style="display:inline-block;font-size:12px;">*24 Hour-format</p></label>
+                                                    <label for="firstname" class="input-label">Time (Hours) <p class="text-muted" style="display:inline-block;font-size:12px;">*24 Hour-format</p></label>
                                                     <input type="text" class="form-control" name="summonhour" id="firstname" placeholder="e.g. 12" required>
                                                     <div class="invalid-feedback">
                                                         Required field!
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="firstname">Time (Mins) <p class="text-muted" style="display:inline-block;font-size:12px;">*24 Hour-format</p></label>
+                                                    <label for="firstname" class="input-label">Time (Mins) <p class="text-muted" style="display:inline-block;font-size:12px;">*24 Hour-format</p></label>
                                                     <input type="text" class="form-control" name="summonmin" id="firstname" placeholder="e.g. 45" required>
                                                     <div class="invalid-feedback">
                                                         Required field!

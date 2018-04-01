@@ -82,23 +82,24 @@
                     $age = (($yearNow - 1) - $yearInput);
                 }
             }
-        }
+        
 
-        $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
-        $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
-        $civilstatus = mysqli_real_escape_string($conn, $_POST['civilstatus']);
-        $religion = mysqli_real_escape_string($conn, $_POST['religion']);
-        $housenum = mysqli_real_escape_string($conn, $_POST['housenum']);
-        $streetname = mysqli_real_escape_string($conn, $_POST['streetname']);
+            $contactnum = mysqli_real_escape_string($conn, $_POST['contactnum']);
+            $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
+            $civilstatus = mysqli_real_escape_string($conn, $_POST['civilstatus']);
+            $religion = mysqli_real_escape_string($conn, $_POST['religion']);
+            $housenum = mysqli_real_escape_string($conn, $_POST['housenum']);
+            $streetname = mysqli_real_escape_string($conn, $_POST['streetname']);
+            
+            
+            $insertUserQuery = "INSERT INTO `tbl_resident`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `occupation`, `civilstatus`, `religion`, `housenum`, `streetname`, `archivestatus`, `blotterrecords`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdate', '$age' ,'$contactnum','$occupation','$civilstatus','$religion','$housenum','$streetname','0','0')";
         
-        
-        $insertUserQuery = "INSERT INTO `tbl_resident`(`lastname`, `firstname`, `middlename`, `gender`, `birthdate`, `age`, `contactnum`, `occupation`, `civilstatus`, `religion`, `housenum`, `streetname`, `archivestatus`, `blotterrecords`) VALUES ('$lastname','$firstname','$middlename','$gender','$birthdate', '$age' ,'$contactnum','$occupation','$civilstatus','$religion','$housenum','$streetname','0','0')";
-    
-        if(mysqli_query($conn, $insertUserQuery)){
-            $_SESSION['successMessage'] = "New resident info successfully added!";
-        }
-        else{
-            $_SESSION['errorMessage'] = mysqli_error($conn);
+            if(mysqli_query($conn, $insertUserQuery)){
+                $_SESSION['successMessage'] = "New resident info successfully added!";
+            }
+            else{
+                $_SESSION['errorMessage'] = mysqli_error($conn);
+            }
         }
     }
 
@@ -147,8 +148,6 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/gijgo@1.8.2/combined/js/gijgo.min.js" type="text/javascript"></script>
         <script src="../js/index.js"></script>
-        
-        
     </head>
     <body>
         <section id="admin-header">
@@ -197,9 +196,11 @@
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="court-referral.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <a href="summon-resolution.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="resident-list.php" class="nav-link link"><i class="fas fa-users"></i>&nbsp;&nbsp;Resident List</a>
                                 </div>
                             </li>
                         </ul>
@@ -279,10 +280,10 @@
                                                     <div class="container">
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <a href="view-profile.php?id=<?php echo $residentid; ?>" class="btn btn-primary btn-table" data-toggle="tooltip" data-placement="top" title="View Profile" target="_blank"><i class="fas fa-eye"></i></a>
+                                                                <a href="view-profile.php?id=<?php echo $residentid; ?>" class="btn btn-primary btn-table" data-toggle="tooltip" data-placement="top" title="View Profile"><i class="fas fa-eye"></i></a>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <a href="" class="btn btn-warning btn-table" data-toggle="tooltip" data-placement="top" title="Update Profile" data-animation="true"><i class="far fa-edit"></i></a>
+                                                                <a href="update-profile.php?id=<?php echo $residentid; ?>" class="btn btn-warning btn-table" data-toggle="tooltip" data-placement="top" title="Update Profile" data-animation="true"><i class="far fa-edit"></i></a>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <a href="manage-resident.php?archive=<?php echo $residentid; ?>" class="btn btn-danger btn-table" data-toggle="tooltip" data-placement="top" title="Archive Profile" data-animation="true"><i class="far fa-file-archive"></i></a>
@@ -317,7 +318,7 @@
                         <form class="needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" id="add-resident-form" novalidate>
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="lastname">Last name</label>
+                                    <label for="lastname" class="input-label">Last name</label>
                                     <input type="text" class="form-control" name="lastname" id="lastname" placeholder="e.g. Dela Cruz" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -325,7 +326,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="firstname">First name</label>
+                                    <label for="firstname" class="input-label">First name</label>
                                     <input type="text" class="form-control" name="firstname" id="firstname" placeholder="e.g. Juan" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -333,7 +334,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="middlename">Middle name</label>
+                                    <label for="middlename" class="input-label">Middle name</label>
                                     <input type="text" class="form-control" name="middlename" id="middlename" placeholder="e.g. Marcial" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -343,7 +344,7 @@
 
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="gender">Gender</label>
+                                    <label for="gender" class="input-label">Gender</label>
                                     <select name="gender" id="gender" class="form-control">
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -351,7 +352,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="datepicker">Birthdate</label>
+                                    <label for="datepicker" class="input-label">Birthdate</label>
                                     <input type="text" class="form-control" name="birthdate" id="datepicker" placeholder="e.g. 1999/06/01" required>
                                     <script>
                                         var datepicker = $('#datepicker').datepicker({
@@ -368,7 +369,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="contactnum">Contact number</label>
+                                    <label for="contactnum" class="input-label">Contact number</label>
                                     <input type="text" class="form-control" name="contactnum" id="contactnum" placeholder="e.g. 09123456789" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -378,7 +379,7 @@
 
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="occupation">Occupation</label>
+                                    <label for="occupation" class="input-label">Occupation</label>
                                     <input type="text" class="form-control" name="occupation" id="occupation" placeholder="e.g. Manager" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -386,7 +387,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="civilstatus">Civil Status</label>
+                                    <label for="civilstatus" class="input-label">Civil Status</label>
                                     <select name="civilstatus" id="civilstatus" class="form-control">
                                         <option value="Single">Single</option>
                                         <option value="Married">Married</option>
@@ -397,7 +398,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="religion">Religion</label>
+                                    <label for="religion" class="input-label">Religion</label>
                                     <input type="text" class="form-control" name="religion" id="religion" placeholder="e.g. Catholic" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -407,7 +408,7 @@
 
                             <div class="form-row mb-3">
                                 <div class="col-md-3">
-                                    <label for="housenum">House number</label>
+                                    <label for="housenum" class="input-label">House number</label>
                                     <input type="text" class="form-control" name="housenum" id="housenum" placeholder="e.g. 47" required>
                                     <div class="invalid-feedback">
                                         Required field!
@@ -415,11 +416,19 @@
                                 </div>
 
                                 <div class="col-md-9">
-                                    <label for="streetname">Street name</label>
-                                    <input type="text" class="form-control" name="streetname" id="streetName" placeholder="e.g. San Rafael" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
+                                    <label for="streetname" class="input-label">Street name</label>
+                                    <select class="form-control" name="streetname" required>
+                                        <?php
+                                            $retrieveStreet = "SELECT * FROM tbl_street WHERE street_desc != 'Others'";
+
+                                            $resultStreet = mysqli_query($conn, $retrieveStreet);
+
+                                            while($DataRows = mysqli_fetch_assoc($resultStreet)){
+                                                $streetName = $DataRows['street_desc'];
+                                        ?>
+                                            <option value="<?php echo $streetName; ?>"><?php echo $streetName; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
                     </div>
@@ -444,11 +453,6 @@
                 </div>
             </div>
         </footer>
-
-        <a href="javascript:" id="return-to-top" class="top-arr">
-            <i class="fas fa-chevron-up"></i>
-        </a>
-
         <script>
                 (function() {
                     'use strict';

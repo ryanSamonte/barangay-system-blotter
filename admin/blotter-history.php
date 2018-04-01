@@ -137,7 +137,7 @@
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
-                                <a href="manage-blotter.php" class="nav-link link active"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
+                                <a href="manage-blotter.php" class="nav-link link"><i class="fas fa-folder-open"></i>&nbsp;Blotter Record</a>
                             </li>
 
                             <li class="nav-item mr-3 nav-li">
@@ -160,9 +160,11 @@
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="court-referral.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <a href="summon-resolution.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="resident-list.php" class="nav-link link"><i class="fas fa-users"></i>&nbsp;&nbsp;Resident List</a>
                                 </div>
                             </li>
                         </ul>
@@ -394,11 +396,6 @@
                 </div>
             </div>
         </footer>
-
-        <a href="javascript:" id="return-to-top" class="top-arr">
-            <i class="fas fa-chevron-up"></i>
-        </a>
-
         <script>
                 (function() {
                     'use strict';

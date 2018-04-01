@@ -1,6 +1,8 @@
 <?php 
     require_once('../functions/connection.php');
-    require_once('../functions/sessions.php'); 
+    require_once('../functions/sessions.php');
+    // require('../fpdf181/fpdf.php');
+    require('textbox.php');
 ?>
 
 <?php
@@ -26,6 +28,114 @@
     }
     else{
         echo "<script>window.location.href='../login.php';</script>";
+    }
+
+    if(ISSET($_GET['bID'])){
+        $blotterIDFromURL = $_GET['bID'];
+    }
+
+    if(ISSET($_POST['generate_Resolution'])){
+        $resolution_details = mysqli_real_escape_string($conn, $_POST['resolution_details']);
+
+        if(strlen($resolution_details) > 2000){
+            $_SESSION['errorMessage'] = "You've exceeded the (2000) character limit";
+        }
+        else{
+            $updateIsResolved = "UPDATE tbl_blotter_details SET isResolved = 'Y' WHERE blotter_id = '$blotterIDFromURL'";
+
+            if(mysqli_query($conn, $updateIsResolved)){
+                $pdf = new PDF_TextBox('P', 'mm', 'Legal'); 
+                $pdf->AddPage();
+                $pdf->SetXY(0,30);
+                $pdf->SetMargins(25.4, 25.4);
+                $pdf->SetRightMargin(100);
+                $pdf->SetFont('Times','B', 12);
+                $pdf->Image('../img/sipac-logo.png',25,20,30);
+                $pdf->Image('../img/navotaas-logo.jpg',160,23,40);
+                $pdf->Image('../img/navotas-watermark.png',10,80,200);
+                $pdf->Cell(25,15,'', 0, 0);
+                $pdf->Cell(170,5,'Republika ng Pilipinas', 0, 1, 'C');
+                $pdf->Cell(170,5,'Lungsod ng Navotas', 0, 1, 'C');
+                $pdf->Cell(170,5,'BARANGAY- SIPAC ALMACEN', 0, 1, 'C');
+                $pdf->Cell(170,5,'Tanggapan ng Punong Barangay', 0, 1, 'C');
+                $pdf->Cell(25,15,'', 0, 1);
+                $pdf->SetFont('times','', 12);
+
+                $retrieveNames = "SELECT lastname, firstname, middlename, housenum, streetname FROM tbl_complainant WHERE blotter_id = '$blotterIDFromURL'";
+
+                $resultNames = mysqli_query($conn, $retrieveNames);
+
+                while($DataRows = mysqli_fetch_array($resultNames)){
+                    $pdf->Cell(60,5,$DataRows['lastname'].", ".$DataRows['firstname']." ".$DataRows['middlename'], 0, 0, 'L');
+                    $pdf->SetFont('times','B', 11);
+                    $pdf->Cell(25,5,'ADDRESS:', 0, 0, 'L');
+                    $pdf->SetFont('times','', 12);
+                    $pdf->Cell(60,5, $DataRows['housenum'].", ".$DataRows['streetname'], 0, 1, 'L');
+                }
+                $pdf->SetFont('times','', 12);
+                $pdf->Cell(25,10,'**Maysumbong**', 0, 1);
+                $pdf->Cell(35,10,'------Laban kay/kina------', 0, 1, 'L');
+
+                $retrieveNames = "SELECT lastname, firstname, middlename, housenum, streetname FROM tbl_respondent WHERE blotter_id = '$blotterIDFromURL'";
+
+                $resultNames = mysqli_query($conn, $retrieveNames);
+
+                while($DataRows = mysqli_fetch_array($resultNames)){
+                    $pdf->Cell(60,5,$DataRows['lastname'].", ".$DataRows['firstname']." ".$DataRows['middlename'], 0, 0, 'L');
+                    $pdf->SetFont('times','B', 11);
+                    $pdf->Cell(25,5,'ADDRESS:', 0, 0, 'L');
+                    $pdf->SetFont('times','', 12);
+                    $pdf->Cell(60,5, $DataRows['housenum'].", ".$DataRows['streetname'], 0, 1, 'L');
+                }
+
+                $pdf->Cell(25,10,'**Ipinagsusumbong**', 0, 1);
+
+                $pdf->Cell(170,10,'KASUNDUANG NABUO SA PATAWAG', 0, 1, 'C');
+
+                $pdf->drawTextBox($resolution_details, 170 , 100, 'J', 'T', false);
+
+                $dateNow = "SELECT EXTRACT(YEAR FROM NOW()) AS 'yearNow', MONTHNAME(NOW()) AS 'monthNow', EXTRACT(DAY FROM NOW()) AS 'dayNow'";
+
+                $resultDateNow = mysqli_query($conn, $dateNow);
+
+                while($DataRows = mysqli_fetch_array($resultDateNow)){
+                    $pdf->Cell(25,10,'', 0, 1);
+                    $pdf->Cell(175,5, "             Ginawa ito ngayong ika-".$DataRows['dayNow']." ng ".$DataRows['monthNow'].", ".$DataRows['yearNow']." sa Bulwagang Barangay Sipac-Almacen,", 0, 1, 'J');
+                    $pdf->Cell(175,5, "Lungsod ng Navotas.", 0, 1, 'J');
+                }
+
+                $pdf->Cell(25,10,'', 0, 1);
+                $pdf->Cell(175,5, "Lagda ng Maysumbong:", 0, 1, 'J');
+                $pdf->Cell(25,10,'', 0, 1);
+
+                $pdf->Cell(25,10,'', 0, 1);
+                $pdf->Cell(175,5, "Lagda ng Ipinagsusumbong:", 0, 1, 'J');
+                $pdf->Cell(25,20,'', 0, 1);
+
+                $pdf->Cell(175,5, "______________", 0, 1, 'J');
+                $pdf->Cell(175,5, "Punong Pangkat", 0, 1, 'J');
+
+                $pdf->Cell(25,15,'', 0, 1);
+                $pdf->Cell(175,5, "__________________", 0, 1, 'J');
+                $pdf->Cell(175,5, "Lupon Tagapamayapa", 0, 1, 'J');
+
+                $pdf->Cell(25,15,'', 0, 1);
+                $pdf->Cell(175,5, "__________________", 0, 1, 'J');
+                $pdf->Cell(175,5, "Lupon Tagapamayapa", 0, 1, 'J');
+
+
+                $dateNow = "SELECT EXTRACT(YEAR FROM NOW()) AS 'yearNow', MONTHNAME(NOW()) AS 'monthNow', EXTRACT(DAY FROM NOW()) AS 'dayNow', EXTRACT(HOUR FROM NOW()) AS 'hourNow', EXTRACT(MINUTE FROM NOW()) AS 'minNow'";
+
+                $resultDateNow = mysqli_query($conn, $dateNow);
+
+                while($DataRows = mysqli_fetch_array($resultDateNow)){
+                    $pdf->Output('I', $DataRows['yearNow']."_".$DataRows['monthNow']."_".$DataRows['dayNow']."_".$DataRows['hourNow']."_".$DataRows['minNow']."_summon_resolution.pdf");
+                }
+            }
+            else{
+                $_SESSION['errorMessage'] = mysqli_error($conn);
+            }
+        }
     }
 ?>
 
@@ -118,9 +228,7 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a href="court-referral.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="summon-resolution.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="resident-list.php" class="nav-link link"><i class="fas fa-users"></i>&nbsp;&nbsp;Resident List</a>
+                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
                                 </div>
                             </li>
                         </ul>
@@ -155,8 +263,8 @@
                             </div>
 
                             <?php
-                                if(ISSET($_GET['bId'])){
-                                    $blotterIDFromURL = $_GET['bId'];
+                                if(ISSET($_GET['bID'])){
+                                    $blotterIDFromURL = $_GET['bID'];
                                 }
 
                                 $retriveBlotterInfo = "SELECT * FROM tbl_blotter_details WHERE blotter_id = '$blotterIDFromURL'";
@@ -173,7 +281,7 @@
 
                             <div class="card-body">
                                 <div class="container">
-                                    <form class="needs-validation" action="add-family-member.php?id=<?php echo $householdheadid; ?>" method="post" id="add-resident-form" novalidate>
+                                    <form class="needs-validation" action="summon-resolution-info.php?bID=<?php echo $blotterIDFromURL; ?>" method="post" id="add-resident-form" novalidate>
                                         <div class="form-row mb-3">
                                             <div class="col">
                                                 <label for="lastname" class="input-label">Incident place</label>
@@ -233,18 +341,22 @@
                                                 <input type="text" class="form-control" value="<?php echo $summon_time; ?>" disabled>
                                             </div>
                                         </div>
-                                </div>
-                                </div>
-                                    <div class="card-footer">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <a href="complainant-summon.php?bID=<?php echo $blotter_id; ?>" class="btn btn-success btn-block" target="_blank"><i class="far fa-handshake"></i>&nbsp;Generate summon for Complainant</a>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <a href="respondent-summon.php?bID=<?php echo $blotter_id; ?>" class="btn btn-danger btn-block" target="_blank"><i class="far fa-handshake"></i>&nbsp;Generate summon for Respondent</a>
+
+                                        <div class="form-row mb-3">
+                                            <div class="col">
+                                                <label for="lastname" class="input-label">Summon resolution details</label>
+                                                <textarea type="text" class="form-control" rows="8" name="resolution_details" required></textarea>
+                                                <div class="invalid-feedback">
+                                                    Required field!
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" name="generate_Resolution" class="btn btn-success"><i class="far fa-check-circle"></i> Generate resolution</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
+                                </div>
                                 <?php } ?>
                                 </form>
                             </div>

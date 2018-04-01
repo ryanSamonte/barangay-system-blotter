@@ -160,9 +160,11 @@
                                 <i class="fas fa-file"></i>&nbsp;Report
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="#developer" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
+                                    <a href="court-referral.php" class="nav-link link"><i class="fas fa-gavel"></i>&nbsp;&nbsp;Court Referral</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="manage-user.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <a href="summon-resolution.php" class="nav-link link"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Resolution</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="resident-list.php" class="nav-link link"><i class="fas fa-users"></i>&nbsp;&nbsp;Resident List</a>
                                 </div>
                             </li>
                         </ul>
@@ -205,7 +207,7 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                                $retriveBlotter = "SELECT * FROM tbl_blotter_details WHERE (CAST(CONCAT(summon_date, ' ', summon_time) AS datetime) >= NOW()) AND archive_status = 0";
+                                                $retriveBlotter = "SELECT * FROM tbl_blotter_details WHERE (CAST(CONCAT(summon_date, ' ', summon_time) AS datetime) >= NOW()) AND archive_status = 0 AND isResolved = 'N'";
 
                                                 $result = mysqli_query($conn, $retriveBlotter);
 
@@ -249,138 +251,6 @@
             </div>
         </section>
 
-        <section id="add-resident-modal">
-            <div class="modal fade" id="add-resident" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">&plus; Add new household head</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form class="needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" id="add-resident-form" novalidate>
-                            <div class="form-row mb-3">
-                                <div class="col-md-4">
-                                    <label for="lastname">Last name</label>
-                                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="e.g. Dela Cruz" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="firstname">First name</label>
-                                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="e.g. Juan" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="middlename">Middle name</label>
-                                    <input type="text" class="form-control" name="middlename" id="middlename" placeholder="e.g. Marcial" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row mb-3">
-                                <div class="col-md-4">
-                                    <label for="gender">Gender</label>
-                                    <select name="gender" id="gender" class="form-control">
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="datepicker">Birthdate</label>
-                                    <input type="text" class="form-control" name="birthdate" id="datepicker" placeholder="e.g. 1999/06/01" required>
-                                    <script>
-                                        var datepicker = $('#datepicker').datepicker({
-                                        // uiLibrary: 'bootstrap4'
-                                        // 
-                                        uiLibrary: 'bootstrap4', 
-                                        iconsLibrary: 'fontawesome',
-                                        format: 'yyyy-mm-dd'
-                                        });
-                                    </script>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="contactnum">Contact number</label>
-                                    <input type="text" class="form-control" name="contactnum" id="contactnum" placeholder="e.g. 09123456789" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row mb-3">
-                                <div class="col-md-4">
-                                    <label for="occupation">Occupation</label>
-                                    <input type="text" class="form-control" name="occupation" id="occupation" placeholder="e.g. Manager" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="civilstatus">Civil Status</label>
-                                    <select name="civilstatus" id="civilstatus" class="form-control">
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Divorced">Divorced</option>
-                                        <option value="Separated">Separated</option>
-                                        <option value="Widowed">Widowed</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="religion">Religion</label>
-                                    <input type="text" class="form-control" name="religion" id="religion" placeholder="e.g. Catholic" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row mb-3">
-                                <div class="col-md-3">
-                                    <label for="housenum">House number</label>
-                                    <input type="text" class="form-control" name="housenum" id="housenum" placeholder="e.g. 47" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-
-                                <div class="col-md-9">
-                                    <label for="streetname">Street name</label>
-                                    <input type="text" class="form-control" name="streetname" id="streetName" placeholder="e.g. San Rafael" required>
-                                    <div class="invalid-feedback">
-                                        Required field!
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" name="submit" class="btn btn-success"><i class="far fa-check-circle"></i> Save changes</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="far fa-times-circle"></i> Close</button>
-                    </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-        </section>
-
         <footer id="main-footer">
             <div class="container">
                 <div class="row">
@@ -391,10 +261,6 @@
                 </div>
             </div>
         </footer>
-
-        <a href="javascript:" id="return-to-top" class="top-arr">
-            <i class="fas fa-chevron-up"></i>
-        </a>
 
         <script>
                 (function() {
